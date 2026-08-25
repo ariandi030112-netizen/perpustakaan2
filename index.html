@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Daftar Hadir · Perpustakaan SMPN 1 SINDANG</title>
 
-    <!-- FAVICON menggunakan foto JPG -->
-    <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/a387e0.jpg22:48">
+    <!-- FAVICON -->
+    <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/a387e0.jpg">
     <link rel="icon" type="image/jpeg" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgICAgJCAkKCgkNDgwODRMREBARExwUFhQWFBwrGx8bGx8bKyYuJjAmLiY6QD0wOkBMR0VHTFpWWVp6d3p+fH5//wAALCAABAAEBAREA/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCgAA//2Q==">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -28,14 +27,12 @@
             overflow: hidden;
         }
 
-        /* ===== SPLIT LAYOUT ===== */
         .split {
             display: flex;
             width: 100%;
             height: 100vh;
         }
 
-        /* ===== LEFT: DASHBOARD ===== */
         .left {
             width: 48%;
             padding: 30px 28px;
@@ -57,7 +54,6 @@
             border-radius: 10px;
         }
 
-        /* ===== RIGHT: BACKGROUND SLIDE ===== */
         .right {
             width: 52%;
             position: relative;
@@ -113,7 +109,6 @@
             backdrop-filter: blur(4px);
         }
 
-        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: space-between;
@@ -204,7 +199,6 @@
             font-weight: 500;
         }
 
-        /* ===== FORM ===== */
         .form-card {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 20px;
@@ -287,7 +281,6 @@
             transform: scale(0.97);
         }
 
-        /* ===== STATISTIK ===== */
         .stats-card {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 20px;
@@ -362,7 +355,6 @@
             color: #1a2a3a;
         }
 
-        /* ===== DETAIL STATISTIK ===== */
         .stats-detail {
             margin-top: 14px;
             border-top: 1px solid rgba(0, 0, 0, 0.06);
@@ -418,7 +410,6 @@
             padding: 10px 0;
         }
 
-        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
             margin-top: auto;
@@ -441,7 +432,6 @@
             font-weight: 800;
         }
 
-        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -466,7 +456,6 @@
             opacity: 1;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
             .split {
                 flex-direction: column;
@@ -574,7 +563,7 @@
                         <img src="https://i.ibb.co/Y4rSsw8x/WhatsApp-Image-2026-08-22-at-08-05-28-1.jpg" alt="Logo Perpustakaan" onerror="this.style.display='none'; this.parentElement.innerHTML='📚'">
                     </a>
                     <div class="title">
-                        <h1> <span>Perpustakaan</span> SMPN 1 SINDANG</h1>
+                        <h1>📚 <span>Perpustakaan</span> SMPN 1 SINDANG</h1>
                         <div class="subtitle">YANG BERILMU YANG BERMUTU</div>
                     </div>
                 </div>
@@ -585,7 +574,7 @@
             </div>
 
             <div class="form-card">
-                <h3> Form Daftar Hadir <span class="badge">Wajib diisi</span></h3>
+                <h3>✍️ Form Daftar Hadir <span class="badge">Wajib diisi</span></h3>
 
                 <div class="form-group">
                     <label>👤 Nama Lengkap</label>
@@ -593,7 +582,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label> Lembaga / Kelas</label>
+                    <label>🏫 Lembaga / Kelas</label>
                     <input type="text" id="inputClass" placeholder="Contoh: SMPN 1 SINDANG / 9A">
                 </div>
 
@@ -623,7 +612,6 @@
                     🕒 Total terdaftar: <strong id="statTotal">0</strong> pengunjung
                 </div>
 
-                <!-- DETAIL STATISTIK -->
                 <div class="stats-detail" id="statsDetail">
                     <div class="detail-section">
                         <h4>👤 Top Pengunjung</h4>
@@ -641,7 +629,7 @@
             </div>
 
             <div class="footer">
-                <span class="credit">⚡ <span>Web_New</span></span> · Perpustakaan SMPN 1 SINDANG
+                <span class="credit">⚡ <span>BARA_AU</span></span> · Perpustakaan SMPN 1 SINDANG
             </div>
 
         </div>
@@ -649,7 +637,7 @@
         <div class="right">
             <div class="bg-slideshow" id="bgSlideshow"></div>
             <div class="right-overlay"></div>
-            <div class="right-brand">galery perpustakaan</div>
+            <div class="right-brand">📸 Galeri Perpustakaan</div>
         </div>
 
     </div>
@@ -681,13 +669,14 @@
         const topClasses = document.getElementById('topClasses');
         const recentVisitors = document.getElementById('recentVisitors');
 
-        // ===== BACKGROUND IMAGES =====
-const bgImages = [
-    'https://images.pexels.com/photos/290595/pexels-photo-290595.jpeg',
-    'https://images.pexels.com/photos/159711/books-pages-read-literature-159711.jpeg',
-    'https://images.pexels.com/photos/301614/pexels-photo-301614.jpeg',
-    'https://images.pexels.com/photos/256541/pexels-photo-256541.jpeg'
-];
+        // ===== BACKGROUND IMAGES (PASTI MUNCUL) =====
+        const bgImages = [
+            'https://images.pexels.com/photos/290595/pexels-photo-290595.jpeg',
+            'https://images.pexels.com/photos/159711/books-pages-read-literature-159711.jpeg',
+            'https://images.pexels.com/photos/301614/pexels-photo-301614.jpeg',
+            'https://images.pexels.com/photos/256541/pexels-photo-256541.jpeg'
+        ];
+
         function initBgSlideshow() {
             const container = document.getElementById('bgSlideshow');
             bgImages.forEach((src, idx) => {
@@ -737,6 +726,7 @@ const bgImages = [
             let countHari = 0,
                 countMinggu = 0,
                 countBulan = 0;
+
             visitors.forEach(v => {
                 const vDate = v.date.split('T')[0];
                 if (vDate === todayStr) countHari++;
@@ -870,12 +860,23 @@ const bgImages = [
             const name = inputName.value.trim();
             const cls = inputClass.value.trim();
 
-            if (!name) { showToast('⚠️ Nama harus diisi!');
-                inputName.focus(); return; }
-            if (!cls) { showToast('⚠️ Lembaga/Kelas harus diisi!');
-                inputClass.focus(); return; }
+            if (!name) {
+                showToast('⚠️ Nama harus diisi!');
+                inputName.focus();
+                return;
+            }
+            if (!cls) {
+                showToast('⚠️ Lembaga/Kelas harus diisi!');
+                inputClass.focus();
+                return;
+            }
 
-            visitors.push({ name, class: cls, date: new Date().toISOString() });
+            const newVisitor = {
+                name: name,
+                class: cls,
+                date: new Date().toISOString()
+            };
+            visitors.push(newVisitor);
             localStorage.setItem('bara_visitors', JSON.stringify(visitors));
 
             inputName.value = '';
@@ -884,7 +885,7 @@ const bgImages = [
 
             updateStats();
             playNotif();
-            showToast(`✅ Terimakasih ${name} ${kelas/lembaga}, telah mendaftarkan data anda pada jumlah pengunjung kami.`);
+            showToast(`✅ Terimakasih ${name} (${cls}), telah mendaftarkan data anda pada jumlah pengunjung kami.`);
 
             btnEnter.style.transform = 'scale(0.95)';
             setTimeout(() => btnEnter.style.transform = '', 200);
@@ -894,21 +895,27 @@ const bgImages = [
         inputName.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                inputName.value.trim() ? inputClass.focus() : handleEnter();
+                if (inputName.value.trim()) {
+                    inputClass.focus();
+                } else {
+                    handleEnter();
+                }
             }
         });
+
         inputClass.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 handleEnter();
             }
         });
+
         btnEnter.addEventListener('click', handleEnter);
 
         // ===== INIT =====
         initBgSlideshow();
         updateStats();
-        console.log('RIOOMD — DAFTAR HADIR PERPUSTAKAAN ACTIVE!');
+        console.log('🔥 BARA AU — DAFTAR HADIR PERPUSTAKAAN ACTIVE!');
     </script>
 
 </body>
