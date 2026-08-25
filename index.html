@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Daftar Hadir · Perpustakaan SMPN 1 SINDANG</title>
 
-    <!-- FAVICON menggunakan foto JPG -->
-    <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/a387e0.jpg22:48">
+    <!-- FAVICON -->
+    <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/a387e0.jpg">
     <link rel="icon" type="image/jpeg" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgICAgJCAkKCgkNDgwODRMREBARExwUFhQWFBwrGx8bGx8bKyYuJjAmLiY6QD0wOkBMR0VHTFpWWVp6d3p+fH5//wAALCAABAAEBAREA/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCgAA//2Q==">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ===== RESET ===== */
         * {
             margin: 0;
             padding: 0;
@@ -28,14 +27,12 @@
             overflow: hidden;
         }
 
-        /* ===== SPLIT LAYOUT ===== */
         .split {
             display: flex;
             width: 100%;
             height: 100vh;
         }
 
-        /* ===== LEFT: DASHBOARD ===== */
         .left {
             width: 48%;
             padding: 30px 28px;
@@ -57,7 +54,6 @@
             border-radius: 10px;
         }
 
-        /* ===== RIGHT: BACKGROUND SLIDE ===== */
         .right {
             width: 52%;
             position: relative;
@@ -113,7 +109,6 @@
             backdrop-filter: blur(4px);
         }
 
-        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: space-between;
@@ -204,7 +199,6 @@
             font-weight: 500;
         }
 
-        /* ===== FORM ===== */
         .form-card {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 20px;
@@ -287,7 +281,6 @@
             transform: scale(0.97);
         }
 
-        /* ===== STATISTIK ===== */
         .stats-card {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 20px;
@@ -362,7 +355,6 @@
             color: #1a2a3a;
         }
 
-        /* ===== DETAIL STATISTIK ===== */
         .stats-detail {
             margin-top: 14px;
             border-top: 1px solid rgba(0, 0, 0, 0.06);
@@ -418,7 +410,6 @@
             padding: 10px 0;
         }
 
-        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
             margin-top: auto;
@@ -441,7 +432,6 @@
             font-weight: 800;
         }
 
-        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -466,7 +456,6 @@
             opacity: 1;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
             .split {
                 flex-direction: column;
@@ -607,10 +596,6 @@
                 </h3>
                 <div class="stats-grid">
                     <div class="stat-item">
-                        <div class="number" id="statHari">0</div>
-                        <div class="label">Hari Ini</div>
-                    </div>
-                    <div class="stat-item">
                         <div class="number" id="statMinggu">0</div>
                         <div class="label">Minggu Ini</div>
                     </div>
@@ -618,12 +603,15 @@
                         <div class="number" id="statBulan">0</div>
                         <div class="label">Bulan Ini</div>
                     </div>
+                    <div class="stat-item">
+                        <div class="number" id="statTotal">0</div>
+                        <div class="label">Total Kunjungan</div>
+                    </div>
                 </div>
                 <div class="stats-total">
-                    🕒 Total terdaftar: <strong id="statTotal">0</strong> pengunjung
+                    🕒 Total terdaftar: <strong id="statTotalAll">0</strong> pengunjung
                 </div>
 
-                <!-- DETAIL STATISTIK -->
                 <div class="stats-detail" id="statsDetail">
                     <div class="detail-section">
                         <h4>👤 Top Pengunjung</h4>
@@ -649,7 +637,7 @@
         <div class="right">
             <div class="bg-slideshow" id="bgSlideshow"></div>
             <div class="right-overlay"></div>
-            <div class="right-brand">galery perpustakaan</div>
+            <div class="right-brand">📸 Galeri Perpustakaan</div>
         </div>
 
     </div>
@@ -658,7 +646,7 @@
 
     <script>
         // ============================================
-        // BARA AU — DAFTAR HADIR + STATISTIK DETAIL
+        // DAFTAR HADIR + STATISTIK DETAIL
         // ============================================
 
         let visitors = JSON.parse(localStorage.getItem('bara_visitors')) || [];
@@ -671,22 +659,22 @@
         const inputClass = document.getElementById('inputClass');
         const btnEnter = document.getElementById('btnEnter');
         const toast = document.getElementById('toast');
-        const statHari = document.getElementById('statHari');
         const statMinggu = document.getElementById('statMinggu');
         const statBulan = document.getElementById('statBulan');
         const statTotal = document.getElementById('statTotal');
+        const statTotalAll = document.getElementById('statTotalAll');
         const statsDetail = document.getElementById('statsDetail');
         const toggleDetail = document.getElementById('toggleDetail');
         const topVisitors = document.getElementById('topVisitors');
         const topClasses = document.getElementById('topClasses');
         const recentVisitors = document.getElementById('recentVisitors');
 
-        // ===== BACKGROUND IMAGES =====
+        // ================================================================
+        // ===== BACKGROUND IMAGES (2 FOTO) =====
+        // ================================================================
         const bgImages = [
-            'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1920&h=1080&fit=crop',
-            'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920&h=1080&fit=crop',
-            'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=1920&h=1080&fit=crop',
-            'https://images.unsplash.com/photo-1589998059171-988d887df646?w=1920&h=1080&fit=crop'
+            'https://files.catbox.moe/tbhblg.jpeg',
+            'https://files.catbox.moe/38mspu.jpeg'
         ];
 
         function initBgSlideshow() {
@@ -694,7 +682,7 @@
             bgImages.forEach((src, idx) => {
                 const img = document.createElement('img');
                 img.src = src;
-                img.alt = `Background ${idx+1}`;
+                img.alt = `Galeri ${idx+1}`;
                 if (idx === 0) img.classList.add('active');
                 container.appendChild(img);
             });
@@ -731,24 +719,22 @@
             weekStart.setDate(today.getDate() - today.getDay());
             const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
-            const todayStr = today.toISOString().split('T')[0];
             const weekStr = weekStart.toISOString().split('T')[0];
             const monthStr = monthStart.toISOString().split('T')[0];
 
-            let countHari = 0,
-                countMinggu = 0,
+            let countMinggu = 0,
                 countBulan = 0;
+
             visitors.forEach(v => {
                 const vDate = v.date.split('T')[0];
-                if (vDate === todayStr) countHari++;
                 if (vDate >= weekStr) countMinggu++;
                 if (vDate >= monthStr) countBulan++;
             });
 
-            statHari.textContent = countHari;
             statMinggu.textContent = countMinggu;
             statBulan.textContent = countBulan;
             statTotal.textContent = visitors.length;
+            statTotalAll.textContent = visitors.length;
 
             updateDetailStats();
         }
@@ -871,12 +857,24 @@
             const name = inputName.value.trim();
             const cls = inputClass.value.trim();
 
-            if (!name) { showToast('⚠️ Nama harus diisi!');
-                inputName.focus(); return; }
-            if (!cls) { showToast('⚠️ Lembaga/Kelas harus diisi!');
-                inputClass.focus(); return; }
+            if (!name) {
+                showToast('⚠️ Nama harus diisi!');
+                inputName.focus();
+                return;
+            }
+            if (!cls) {
+                showToast('⚠️ Lembaga/Kelas harus diisi!');
+                inputClass.focus();
+                return;
+            }
 
-            visitors.push({ name, class: cls, date: new Date().toISOString() });
+            const newVisitor = {
+                name: name,
+                class: cls,
+                date: new Date().toISOString()
+            };
+
+            visitors.push(newVisitor);
             localStorage.setItem('bara_visitors', JSON.stringify(visitors));
 
             inputName.value = '';
@@ -885,7 +883,7 @@
 
             updateStats();
             playNotif();
-            showToast(`✅ Terimakasih ${name} ${kelas/lembaga}, telah mendaftarkan data anda pada jumlah pengunjung kami.`);
+            showToast(`✅ Terimakasih ${name} (${cls}), telah mendaftarkan data anda pada jumlah pengunjung kami.`);
 
             btnEnter.style.transform = 'scale(0.95)';
             setTimeout(() => btnEnter.style.transform = '', 200);
@@ -895,21 +893,32 @@
         inputName.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                inputName.value.trim() ? inputClass.focus() : handleEnter();
+                if (inputName.value.trim()) {
+                    inputClass.focus();
+                } else {
+                    handleEnter();
+                }
             }
         });
+
         inputClass.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 handleEnter();
             }
         });
+
         btnEnter.addEventListener('click', handleEnter);
 
         // ===== INIT =====
         initBgSlideshow();
         updateStats();
-        console.log('RIOOMD — DAFTAR HADIR PERPUSTAKAAN ACTIVE!');
+
+        // Auto refresh setiap 5 detik
+        setInterval(updateStats, 5000);
+
+        console.log('📚 DAFTAR HADIR PERPUSTAKAAN ACTIVE!');
+        console.log('📊 Total data di localStorage:', visitors.length);
     </script>
 
 </body>
