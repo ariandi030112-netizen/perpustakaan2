@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Daftar Hadir · Perpustakaan SMPN 1 SINDANG</title>
+
+    <!-- FAVICON menggunakan foto JPG -->
+    <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/a387e0.jpg22:48">
+    <link rel="icon" type="image/jpeg" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgICAgJCAkKCgkNDgwODRMREBARExwUFhQWFBwrGx8bGx8bKyYuJjAmLiY6QD0wOkBMR0VHTFpWWVp6d3p+fH5//wAALCAABAAEBAREA/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCgAA//2Q==">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #0a0a0f;
+            overflow: hidden;
+        }
+
+        /* ===== SPLIT LAYOUT ===== */
+        .split {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* ===== LEFT: DASHBOARD ===== */
+        .left {
+            width: 48%;
+            padding: 30px 28px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.08);
+            z-index: 2;
+            border-right: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .left::-webkit-scrollbar {
+            width: 4px;
+        }
+        .left::-webkit-scrollbar-thumb {
+            background: #2a7de1;
+            border-radius: 10px;
+        }
+
+        /* ===== RIGHT: BACKGROUND SLIDE ===== */
+        .right {
+            width: 52%;
+            position: relative;
+            overflow: hidden;
+            background: #0a0a12;
+        }
+
+        .right .bg-slideshow {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .right .bg-slideshow img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .right .bg-slideshow img.active {
+            opacity: 1;
+        }
+
+        .right-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .right-brand {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 18px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 14px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-left .logo-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 85px;
+            height: 85px;
+            border-radius: 18px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #fff;
+            border: 2px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            transition: 0.25s;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .header-left .logo-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(42, 125, 225, 0.15);
+        }
+
+        .header-left .logo-link:active {
+            transform: scale(0.95);
+        }
+
+        .header-left .logo-link img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+        }
+
+        .header-left .title h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1a2a3a;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .header-left .title h1 span {
+            color: #2a7de1;
+        }
+
+        .header-left .title .subtitle {
+            font-size: 12px;
+            color: #6b7a8f;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .header-right {
+            text-align: right;
+            background: rgba(0, 0, 0, 0.03);
+            padding: 8px 18px;
+            border-radius: 14px;
+            min-width: 140px;
+            flex-shrink: 0;
+        }
+
+        .header-right .date {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a2a3a;
+        }
+
+        .header-right .day {
+            font-size: 13px;
+            color: #6b7a8f;
+            font-weight: 500;
+        }
+
+        /* ===== FORM ===== */
+        .form-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 22px 20px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            margin-bottom: 20px;
+        }
+
+        .form-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a2a3a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-card h3 .badge {
+            background: #2a7de1;
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 12px;
+            color: #3a4a5a;
+            margin-bottom: 3px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 11px 16px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(0, 0, 0, 0.06);
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: 0.25s;
+            background: rgba(255, 255, 255, 0.8);
+            color: #1a2a3a;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2a7de1;
+            box-shadow: 0 0 0 4px rgba(42, 125, 225, 0.1);
+        }
+
+        .btn-enter {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2a7de1, #1a5bb5);
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.25s;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .btn-enter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(42, 125, 225, 0.25);
+        }
+
+        .btn-enter:active {
+            transform: scale(0.97);
+        }
+
+        /* ===== STATISTIK ===== */
+        .stats-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 20px 20px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            flex-shrink: 0;
+        }
+
+        .stats-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a2a3a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stats-card h3 .toggle-detail {
+            font-size: 12px;
+            font-weight: 600;
+            color: #2a7de1;
+            cursor: pointer;
+            background: rgba(42, 125, 225, 0.1);
+            padding: 4px 14px;
+            border-radius: 20px;
+            transition: 0.2s;
+        }
+
+        .stats-card h3 .toggle-detail:hover {
+            background: rgba(42, 125, 225, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        .stat-item .number {
+            font-size: 26px;
+            font-weight: 800;
+            color: #2a7de1;
+            line-height: 1.2;
+        }
+
+        .stat-item .label {
+            font-size: 10px;
+            color: #6b7a8f;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .stats-total {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #8a9aa8;
+            text-align: center;
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            padding-top: 10px;
+        }
+
+        .stats-total strong {
+            color: #1a2a3a;
+        }
+
+        /* ===== DETAIL STATISTIK ===== */
+        .stats-detail {
+            margin-top: 14px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            padding-top: 14px;
+            display: none;
+        }
+
+        .stats-detail.show {
+            display: block;
+        }
+
+        .stats-detail .detail-section {
+            margin-bottom: 14px;
+        }
+
+        .stats-detail .detail-section h4 {
+            font-size: 13px;
+            color: #3a4a5a;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .stats-detail .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .stats-detail .detail-item .name {
+            color: #1a2a3a;
+            font-weight: 500;
+        }
+
+        .stats-detail .detail-item .count {
+            color: #2a7de1;
+            font-weight: 700;
+            background: rgba(42, 125, 225, 0.08);
+            padding: 0 10px;
+            border-radius: 12px;
+        }
+
+        .stats-detail .detail-item .class-label {
+            color: #6b7a8f;
+            font-size: 11px;
+        }
+
+        .stats-detail .detail-empty {
+            text-align: center;
+            color: #8a9aa8;
+            font-size: 13px;
+            padding: 10px 0;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            font-size: 13px;
+            color: #6b7a8f;
+            font-weight: 500;
+        }
+
+        .footer .credit {
+            font-weight: 700;
+            background: linear-gradient(135deg, #2a7de1, #1a5bb5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .footer .credit span {
+            font-weight: 800;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: #1a2a3a;
+            color: #fff;
+            padding: 14px 26px;
+            border-radius: 18px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 999;
+            max-width: 400px;
+            backdrop-filter: blur(12px);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .split {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+            .left {
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+                padding: 20px 16px;
+            }
+            .right {
+                width: 100%;
+                height: 60vh;
+                position: relative;
+            }
+            .right-brand {
+                bottom: 16px;
+                right: 16px;
+                font-size: 12px;
+                padding: 6px 14px;
+            }
+            .header-left .title h1 {
+                font-size: 18px;
+            }
+            .header-left .logo-link {
+                width: 70px;
+                height: 70px;
+            }
+            .header-right .date {
+                font-size: 17px;
+            }
+            .stat-item .number {
+                font-size: 22px;
+            }
+            .toast {
+                left: 16px;
+                right: 16px;
+                font-size: 13px;
+                padding: 12px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .left {
+                padding: 16px 12px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .header-left .title h1 {
+                font-size: 16px;
+            }
+            .header-left .logo-link {
+                width: 60px;
+                height: 60px;
+            }
+            .header-right {
+                text-align: center;
+                min-width: unset;
+                padding: 6px 14px;
+            }
+            .header-right .date {
+                font-size: 15px;
+            }
+            .form-card {
+                padding: 16px 14px;
+            }
+            .stats-card {
+                padding: 16px 14px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 6px;
+            }
+            .stat-item .number {
+                font-size: 18px;
+            }
+            .stat-item .label {
+                font-size: 9px;
+            }
+            .right {
+                height: 40vh;
+            }
+            .stats-detail .detail-item {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="split">
+
+        <div class="left">
+
+            <div class="header">
+                <div class="header-left">
+                    <a href="javascript:void(0)" class="logo-link" onclick="showToast('📚 Perpustakaan SMPN 1 SINDANG')">
+                        <img src="https://i.ibb.co/Y4rSsw8x/WhatsApp-Image-2026-08-22-at-08-05-28-1.jpg" alt="Logo Perpustakaan" onerror="this.style.display='none'; this.parentElement.innerHTML='📚'">
+                    </a>
+                    <div class="title">
+                        <h1>📚 <span>Perpustakaan</span> SMPN 1 SINDANG</h1>
+                        <div class="subtitle">YANG BERILMU YANG BERMUTU</div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="date" id="dateDisplay">--</div>
+                    <div class="day" id="dayDisplay">--</div>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <h3>✍️ Form Daftar Hadir <span class="badge">Wajib diisi</span></h3>
+
+                <div class="form-group">
+                    <label>👤 Nama Lengkap</label>
+                    <input type="text" id="inputName" placeholder="Masukkan nama..." autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label>🏫 Lembaga / Kelas</label>
+                    <input type="text" id="inputClass" placeholder="Contoh: SMPN 1 SINDANG / 9A">
+                </div>
+
+                <button class="btn-enter" id="btnEnter">🚀 Enter</button>
+            </div>
+
+            <div class="stats-card">
+                <h3>
+                    📊 Statistik Pengunjung
+                    <span class="toggle-detail" id="toggleDetail">📋 Lihat Detail</span>
+                </h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="number" id="statHari">0</div>
+                        <div class="label">Hari Ini</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number" id="statMinggu">0</div>
+                        <div class="label">Minggu Ini</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="number" id="statBulan">0</div>
+                        <div class="label">Bulan Ini</div>
+                    </div>
+                </div>
+                <div class="stats-total">
+                    🕒 Total terdaftar: <strong id="statTotal">0</strong> pengunjung
+                </div>
+
+                <!-- DETAIL STATISTIK -->
+                <div class="stats-detail" id="statsDetail">
+                    <div class="detail-section">
+                        <h4>👤 Top Pengunjung</h4>
+                        <div id="topVisitors"></div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>🏫 Top Kelas / Lembaga</h4>
+                        <div id="topClasses"></div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>📋 Riwayat Terakhir</h4>
+                        <div id="recentVisitors"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <span class="credit">⚡ <span>BARA_AU</span></span> · Perpustakaan SMPN 1 SINDANG
+            </div>
+
+        </div>
+
+        <div class="right">
+            <div class="bg-slideshow" id="bgSlideshow"></div>
+            <div class="right-overlay"></div>
+            <div class="right-brand">📸 Galeri Perpustakaan</div>
+        </div>
+
+    </div>
+
+    <div class="toast" id="toast">✅ Terimakasih telah mendaftarkan data anda pada jumlah pengunjung kami.</div>
+
+    <script>
+        // ============================================
+        // BARA AU — DAFTAR HADIR + STATISTIK DETAIL
+        // ============================================
+
+        let visitors = JSON.parse(localStorage.getItem('bara_visitors')) || [];
+        let bgIndex = 0;
+        let bgInterval;
+        let detailVisible = false;
+
+        // ===== DOM =====
+        const inputName = document.getElementById('inputName');
+        const inputClass = document.getElementById('inputClass');
+        const btnEnter = document.getElementById('btnEnter');
+        const toast = document.getElementById('toast');
+        const statHari = document.getElementById('statHari');
+        const statMinggu = document.getElementById('statMinggu');
+        const statBulan = document.getElementById('statBulan');
+        const statTotal = document.getElementById('statTotal');
+        const statsDetail = document.getElementById('statsDetail');
+        const toggleDetail = document.getElementById('toggleDetail');
+        const topVisitors = document.getElementById('topVisitors');
+        const topClasses = document.getElementById('topClasses');
+        const recentVisitors = document.getElementById('recentVisitors');
+
+        // ===== BACKGROUND IMAGES =====
+        const bgImages = [
+            'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1920&h=1080&fit=crop',
+            'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1920&h=1080&fit=crop',
+            'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=1920&h=1080&fit=crop',
+            'https://images.unsplash.com/photo-1589998059171-988d887df646?w=1920&h=1080&fit=crop'
+        ];
+
+        function initBgSlideshow() {
+            const container = document.getElementById('bgSlideshow');
+            bgImages.forEach((src, idx) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `Background ${idx+1}`;
+                if (idx === 0) img.classList.add('active');
+                container.appendChild(img);
+            });
+            bgInterval = setInterval(nextBgSlide, 5000);
+        }
+
+        function nextBgSlide() {
+            const imgs = document.querySelectorAll('.bg-slideshow img');
+            if (!imgs.length) return;
+            imgs.forEach(img => img.classList.remove('active'));
+            bgIndex = (bgIndex + 1) % imgs.length;
+            imgs[bgIndex].classList.add('active');
+        }
+
+        // ===== DATE =====
+        function updateDate() {
+            const now = new Date();
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober',
+                'November', 'Desember'
+            ];
+
+            document.getElementById('dateDisplay').textContent =
+                `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            document.getElementById('dayDisplay').textContent = days[now.getDay()];
+        }
+        updateDate();
+
+        // ===== STATISTIK =====
+        function updateStats() {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const weekStart = new Date(today);
+            weekStart.setDate(today.getDate() - today.getDay());
+            const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+            const todayStr = today.toISOString().split('T')[0];
+            const weekStr = weekStart.toISOString().split('T')[0];
+            const monthStr = monthStart.toISOString().split('T')[0];
+
+            let countHari = 0,
+                countMinggu = 0,
+                countBulan = 0;
+            visitors.forEach(v => {
+                const vDate = v.date.split('T')[0];
+                if (vDate === todayStr) countHari++;
+                if (vDate >= weekStr) countMinggu++;
+                if (vDate >= monthStr) countBulan++;
+            });
+
+            statHari.textContent = countHari;
+            statMinggu.textContent = countMinggu;
+            statBulan.textContent = countBulan;
+            statTotal.textContent = visitors.length;
+
+            updateDetailStats();
+        }
+
+        // ===== DETAIL STATISTIK =====
+        function updateDetailStats() {
+            // Top Visitors
+            const visitorCount = {};
+            visitors.forEach(v => {
+                visitorCount[v.name] = (visitorCount[v.name] || 0) + 1;
+            });
+            const sortedVisitors = Object.entries(visitorCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+
+            if (sortedVisitors.length === 0) {
+                topVisitors.innerHTML = '<div class="detail-empty">Belum ada data</div>';
+            } else {
+                topVisitors.innerHTML = sortedVisitors.map(([name, count]) =>
+                    `<div class="detail-item">
+                        <span class="name">${name}</span>
+                        <span class="count">${count}x</span>
+                    </div>`
+                ).join('');
+            }
+
+            // Top Classes
+            const classCount = {};
+            visitors.forEach(v => {
+                classCount[v.class] = (classCount[v.class] || 0) + 1;
+            });
+            const sortedClasses = Object.entries(classCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+
+            if (sortedClasses.length === 0) {
+                topClasses.innerHTML = '<div class="detail-empty">Belum ada data</div>';
+            } else {
+                topClasses.innerHTML = sortedClasses.map(([cls, count]) =>
+                    `<div class="detail-item">
+                        <span class="class-label">${cls}</span>
+                        <span class="count">${count}x</span>
+                    </div>`
+                ).join('');
+            }
+
+            // Recent Visitors (5 terakhir)
+            const recent = [...visitors].reverse().slice(0, 5);
+            if (recent.length === 0) {
+                recentVisitors.innerHTML = '<div class="detail-empty">Belum ada data</div>';
+            } else {
+                recentVisitors.innerHTML = recent.map(v => {
+                    const date = new Date(v.date);
+                    const timeStr = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                    return `<div class="detail-item">
+                        <span class="name">${v.name} <span style="color:#8a9aa8;font-size:11px;">(${v.class})</span></span>
+                        <span style="color:#8a9aa8;font-size:11px;">${timeStr}</span>
+                    </div>`;
+                }).join('');
+            }
+        }
+
+        // ===== TOGGLE DETAIL =====
+        toggleDetail.addEventListener('click', function() {
+            detailVisible = !detailVisible;
+            statsDetail.classList.toggle('show', detailVisible);
+            this.textContent = detailVisible ? '📕 Sembunyikan' : '📋 Lihat Detail';
+        });
+
+        // ===== SOUND + SPEECH =====
+        function playNotif() {
+            try {
+                const ctx = new(window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.value = 880;
+                osc.type = 'sine';
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.4);
+
+                setTimeout(() => {
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.connect(gain2);
+                    gain2.connect(ctx.destination);
+                    osc2.frequency.value = 1100;
+                    osc2.type = 'sine';
+                    gain2.gain.setValueAtTime(0.12, ctx.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                    osc2.start(ctx.currentTime);
+                    osc2.stop(ctx.currentTime + 0.3);
+                }, 150);
+
+                setTimeout(() => {
+                    const msg = new SpeechSynthesisUtterance(
+                        'Terima kasih telah mendaftarkan data anda pada jumlah pengunjung kami.'
+                    );
+                    msg.lang = 'id-ID';
+                    msg.rate = 0.9;
+                    msg.pitch = 1;
+                    speechSynthesis.speak(msg);
+                }, 300);
+            } catch (e) { console.log('Audio not supported'); }
+        }
+
+        // ===== TOAST =====
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.remove('show'), 5000);
+        }
+
+        // ===== ENTER =====
+        function handleEnter() {
+            const name = inputName.value.trim();
+            const cls = inputClass.value.trim();
+
+            if (!name) { showToast('⚠️ Nama harus diisi!');
+                inputName.focus(); return; }
+            if (!cls) { showToast('⚠️ Lembaga/Kelas harus diisi!');
+                inputClass.focus(); return; }
+
+            visitors.push({ name, class: cls, date: new Date().toISOString() });
+            localStorage.setItem('bara_visitors', JSON.stringify(visitors));
+
+            inputName.value = '';
+            inputClass.value = '';
+            inputName.focus();
+
+            updateStats();
+            playNotif();
+            showToast(`✅ Terimakasih ${name} ${kelas/lembaga}, telah mendaftarkan data anda pada jumlah pengunjung kami.`);
+
+            btnEnter.style.transform = 'scale(0.95)';
+            setTimeout(() => btnEnter.style.transform = '', 200);
+        }
+
+        // ===== EVENTS =====
+        inputName.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                inputName.value.trim() ? inputClass.focus() : handleEnter();
+            }
+        });
+        inputClass.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleEnter();
+            }
+        });
+        btnEnter.addEventListener('click', handleEnter);
+
+        // ===== INIT =====
+        initBgSlideshow();
+        updateStats();
+        console.log('RIOOMD — DAFTAR HADIR PERPUSTAKAAN ACTIVE!');
+    </script>
+
+</body>
+</html>
