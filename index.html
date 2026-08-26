@@ -126,7 +126,6 @@
             gap: 14px;
         }
 
-        /* ===== LOGO PERSEGI ===== */
         .header-left .logo-link {
             display: flex;
             align-items: center;
@@ -560,7 +559,6 @@
 
             <div class="header">
                 <div class="header-left">
-                    <!-- ===== LOGO PERSEGI ===== -->
                     <a href="javascript:void(0)" class="logo-link" onclick="showToast('📚 Perpustakaan SMPN 1 SINDANG')">
                         <img src="https://files.catbox.moe/a387e0.jpg" alt="Logo Perpustakaan" onerror="this.style.display='none'; this.parentElement.innerHTML='📚'">
                     </a>
@@ -672,30 +670,57 @@
         const recentVisitors = document.getElementById('recentVisitors');
 
         // ================================================================
-        // ===== BACKGROUND IMAGES (2 FOTO) =====
+        // ===== BACKGROUND IMAGES (5 FOTO — TAMBAH 2) =====
         // ================================================================
         const bgImages = [
+            'https://files.catbox.moe/8ati45.jpeg',
+            'https://files.catbox.moe/hc36v8.jpeg',
+            'https://files.catbox.moe/aeob0l.jpeg',
             'https://files.catbox.moe/tbhblg.jpeg',
             'https://files.catbox.moe/38mspu.jpeg'
         ];
 
         function initBgSlideshow() {
             const container = document.getElementById('bgSlideshow');
+            container.innerHTML = '';
+            
             bgImages.forEach((src, idx) => {
                 const img = document.createElement('img');
                 img.src = src;
                 img.alt = `Galeri ${idx+1}`;
                 if (idx === 0) img.classList.add('active');
+                
+                img.onerror = function() {
+                    console.warn(`⚠️ Gambar ${idx+1} gagal load`);
+                    this.style.display = 'none';
+                };
+                
                 container.appendChild(img);
             });
-            bgInterval = setInterval(nextBgSlide, 5000);
+            
+            setTimeout(() => {
+                const imgs = container.querySelectorAll('img');
+                if (imgs.length && !document.querySelector('.bg-slideshow img.active')) {
+                    imgs[0].classList.add('active');
+                }
+            }, 200);
+            
+            bgInterval = setInterval(nextBgSlide, 3500);
         }
 
         function nextBgSlide() {
             const imgs = document.querySelectorAll('.bg-slideshow img');
             if (!imgs.length) return;
+            const visibleImgs = Array.from(imgs).filter(img => img.style.display !== 'none');
+            if (!visibleImgs.length) return;
+            
             imgs.forEach(img => img.classList.remove('active'));
             bgIndex = (bgIndex + 1) % imgs.length;
+            let tries = 0;
+            while (imgs[bgIndex].style.display === 'none' && tries < imgs.length) {
+                bgIndex = (bgIndex + 1) % imgs.length;
+                tries++;
+            }
             imgs[bgIndex].classList.add('active');
         }
 
