@@ -1,0 +1,3370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>📚 Belajar Pemrograman Dari Dasar</title>
+    <style>
+        /* ========== RESET & GLOBAL ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0b0e1a;
+            color: #e8ecf5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px 100px;
+        }
+
+        /* ========== CONTAINER BUKU ========== */
+        .book-wrapper {
+            max-width: 920px;
+            width: 100%;
+            background: #12172a;
+            border-radius: 40px 40px 30px 30px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px #ff6b3520;
+            overflow: hidden;
+            border: 1px solid #ff6b3540;
+            position: relative;
+        }
+
+        /* ========== COVER ========== */
+        .cover {
+            background: linear-gradient(145deg, #0b0d1a, #1a1f3a, #0d0f20);
+            padding: 50px 30px 45px;
+            text-align: center;
+            border-bottom: 6px solid #ff6b35;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, #ff6b3515, transparent 60%);
+            animation: coverGlow 8s infinite alternate;
+        }
+
+        @keyframes coverGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(10%, 10%) scale(1.3);
+                opacity: 1;
+            }
+        }
+
+        .cover * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cover .icon-big {
+            font-size: 72px;
+            display: block;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 30px #ff6b3560);
+        }
+
+        .cover h1 {
+            font-size: 46px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #ff6b35, #ffaa77, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            margin-bottom: 8px;
+        }
+
+        .cover .subtitle {
+            font-size: 20px;
+            font-weight: 300;
+            color: #aabbdd;
+            letter-spacing: 6px;
+            border-top: 2px solid #ff6b3560;
+            border-bottom: 2px solid #ff6b3560;
+            padding: 12px 0;
+            display: inline-block;
+            margin: 10px auto 18px;
+        }
+
+        .cover .description {
+            font-size: 15px;
+            color: #8899bb;
+            max-width: 500px;
+            margin: 10px auto 20px;
+            line-height: 1.7;
+            background: #1a1f3a80;
+            padding: 14px 24px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid #ff6b3530;
+        }
+
+        .cover .badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 18px 0 22px;
+        }
+
+        .cover .badge-group span {
+            background: #1a1f3a;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffaa77;
+            border: 1px solid #ff6b3540;
+            transition: 0.3s;
+        }
+
+        .cover .badge-group span:hover {
+            background: #ff6b3520;
+            transform: scale(1.05);
+        }
+
+        .cover .author {
+            font-style: italic;
+            color: #667799;
+            font-size: 15px;
+            margin-top: 12px;
+            border-top: 1px solid #2a2f4a;
+            padding-top: 18px;
+        }
+
+        .cover .author strong {
+            color: #ffaa77;
+        }
+
+        .cover .start-hint {
+            margin-top: 22px;
+            font-size: 13px;
+            color: #445577;
+            animation: pulseHint 2s infinite;
+        }
+
+        @keyframes pulseHint {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ========== KONTEN HALAMAN ========== */
+        .pages-container {
+            padding: 25px 25px 20px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .page-content {
+            display: none;
+            animation: pageFade 0.4s ease;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        @keyframes pageFade {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ========== STYLE HALAMAN ========== */
+        .page-content {
+            background: #12172a;
+            border-radius: 24px;
+            padding: 30px 32px;
+            border-left: 5px solid #ff6b35;
+            box-shadow: inset 0 0 60px #00000030;
+        }
+
+        .page-content .page-number {
+            font-size: 13px;
+            color: #445577;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed #1a1f3a;
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .page-content .page-number .chapter-tag {
+            color: #ffaa77;
+            background: #ff6b3520;
+            padding: 0 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .page-content h2 {
+            font-size: 28px;
+            color: #f0f4ff;
+            border-bottom: 3px solid #ff6b35;
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .page-content h2 .icon {
+            background: #ff6b35;
+            color: #0b0e1a;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .page-content h3 {
+            font-size: 20px;
+            color: #d0d8f0;
+            margin: 24px 0 12px;
+            padding-left: 12px;
+            border-left: 4px solid #ff6b3580;
+        }
+
+        .page-content h4 {
+            font-size: 17px;
+            color: #b0bce0;
+            margin: 18px 0 10px;
+        }
+
+        .page-content p {
+            line-height: 1.9;
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #c8d0e5;
+        }
+
+        .page-content .highlight {
+            background: #ff6b3530;
+            padding: 2px 14px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #ffaa77;
+            border: 1px solid #ff6b3540;
+        }
+
+        .page-content .code-block {
+            background: #0b0e1a;
+            color: #d4e6ff;
+            padding: 18px 22px;
+            border-radius: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 15px 0 22px;
+            border-left: 5px solid #ff6b35;
+            overflow-x: auto;
+            box-shadow: inset 0 0 30px #00000050;
+            line-height: 1.6;
+        }
+
+        .page-content .info-box {
+            background: #1a1f3a;
+            border-radius: 16px;
+            padding: 16px 22px;
+            margin: 18px 0;
+            border-left: 5px solid #ffaa77;
+            border: 1px solid #ff6b3530;
+        }
+
+        .page-content .info-box strong {
+            color: #ffaa77;
+        }
+
+        .page-content .table-wrap {
+            overflow-x: auto;
+            margin: 18px 0;
+        }
+
+        .page-content table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #0b0e1a;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .page-content table th {
+            background: #ff6b35;
+            color: #0b0e1a;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .page-content table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #1a1f3a;
+            color: #c8d0e5;
+        }
+
+        .page-content table tr:hover td {
+            background: #1a1f3a;
+        }
+
+        .page-content ul,
+        .page-content ol {
+            margin-left: 25px;
+            margin-bottom: 18px;
+            color: #c8d0e5;
+        }
+
+        .page-content li {
+            margin-bottom: 8px;
+            font-size: 15.5px;
+            line-height: 1.7;
+        }
+
+        /* ========== NAVIGASI BAWAH (FIXED) ========== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0d1122;
+            padding: 12px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border-top: 3px solid #ff6b35;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .bottom-nav .left-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .bottom-nav .right-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .bottom-nav .nav-btn {
+            background: #1a1f3a;
+            border: none;
+            color: #c8d0e8;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #2a2f4a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .bottom-nav .nav-btn:hover:not(:disabled) {
+            background: #ff6b35;
+            color: #0b0e1a;
+            border-color: #ff6b35;
+            transform: scale(1.03);
+        }
+
+        .bottom-nav .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .bottom-nav .page-indicator {
+            color: #8899bb;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 30px;
+            border: 1px solid #1a1f3a;
+            background: #0b0e1a;
+            min-width: 100px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .bottom-nav .chapter-badge {
+            background: #ff6b3520;
+            color: #ffaa77;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            border: 1px solid #ff6b3540;
+            white-space: nowrap;
+        }
+
+        .bottom-nav .search-box {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .bottom-nav .search-box input {
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: none;
+            background: #0b0e1a;
+            color: #e8ecf5;
+            font-size: 13px;
+            width: 140px;
+            outline: 2px solid transparent;
+            transition: 0.3s;
+            border: 1px solid #1a1f3a;
+        }
+
+        .bottom-nav .search-box input:focus {
+            outline: 2px solid #ff6b35;
+            border-color: #ff6b35;
+        }
+
+        .bottom-nav .search-box input::placeholder {
+            color: #445577;
+        }
+
+        .bottom-nav .search-box .search-btn {
+            background: #ff6b35;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-weight: bold;
+            color: #0b0e1a;
+            cursor: pointer;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* ========== FOOTER BUKU ========== */
+        .book-footer {
+            text-align: center;
+            padding: 20px 20px;
+            color: #445577;
+            border-top: 1px solid #1a1f3a;
+            font-size: 13px;
+            background: #0d1122;
+        }
+
+        .book-footer strong {
+            color: #ffaa77;
+        }
+
+        /* ========== RESPONSIF ========== */
+        @media (max-width: 750px) {
+            .bottom-nav {
+                padding: 10px 14px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .bottom-nav .left-group,
+            .bottom-nav .right-group {
+                justify-content: center;
+            }
+
+            .bottom-nav .search-box input {
+                width: 110px;
+                font-size: 12px;
+            }
+
+            .bottom-nav .nav-btn {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+
+            .bottom-nav .page-indicator {
+                min-width: 70px;
+                font-size: 12px;
+                padding: 4px 10px;
+            }
+
+            body {
+                padding-bottom: 140px;
+            }
+
+            .cover h1 {
+                font-size: 30px;
+            }
+            .cover .subtitle {
+                font-size: 15px;
+                letter-spacing: 3px;
+            }
+            .cover .description {
+                font-size: 13px;
+                padding: 10px 16px;
+            }
+            .page-content {
+                padding: 20px 16px;
+            }
+            .page-content h2 {
+                font-size: 22px;
+            }
+            .page-content h2 .icon {
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .bottom-nav .search-box input {
+                width: 80px;
+                font-size: 11px;
+            }
+            .bottom-nav .nav-btn {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
+            .bottom-nav .chapter-badge {
+                font-size: 10px;
+                padding: 3px 10px;
+            }
+            .cover h1 {
+                font-size: 24px;
+            }
+            .cover .icon-big {
+                font-size: 50px;
+            }
+            .page-content .code-block {
+                font-size: 12px;
+                padding: 12px 14px;
+            }
+            body {
+                padding-bottom: 160px;
+            }
+        }
+
+        /* ========== SCROLLBAR ========== */
+        .pages-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .pages-container::-webkit-scrollbar-track {
+            background: #0b0e1a;
+        }
+        .pages-container::-webkit-scrollbar-thumb {
+            background: #ff6b35;
+            border-radius: 10px;
+        }
+
+        .search-highlight {
+            background: #ffcc44;
+            color: #0b0e1a;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== BUKU WRAPPER ==================== -->
+    <div class="book-wrapper" id="bookWrapper">
+
+        <!-- ========== COVER ========== -->
+        <div class="cover" id="coverSection">
+            <span class="icon-big">📚</span>
+            <h1>BELAJAR PEMROGRAMAN</h1>
+            <div class="subtitle">DARI DASAR</div>
+            <div class="description">
+                📖 Panduan lengkap 6 bahasa pemrograman: HTML, CSS, JavaScript, Python, Dart &amp; SQL.
+                Dilengkapi teori, contoh kode, dan latihan. Cocok untuk pemula hingga intermediate.
+            </div>
+            <div class="badge-group">
+                <span>🌐 HTML</span>
+                <span>🎨 CSS</span>
+                <span>⚡ JavaScript</span>
+                <span>🐍 Python</span>
+                <span>🎯 Dart</span>
+                <span>🗄️ SQL</span>
+            </div>
+            <div class="author">
+                ✍️ Ditulis oleh <strong>BARA AU</strong> — untuk <strong>PACK LEADER</strong>
+            </div>
+            <div class="start-hint">
+                👆 Scroll ke bawah atau pake navigasi di bawah
+            </div>
+        </div>
+
+        <!-- ========== KONTEN HALAMAN ========== -->
+        <div class="pages-container" id="pagesContainer">
+
+            <!-- ===== HALAMAN 1: KATA PENGANTAR ===== -->
+            <div class="page-content active" data-page="1" data-chapter="cover">
+                <div class="page-number">
+                    <span>Halaman 1</span>
+                    <span class="chapter-tag">📖 Cover</span>
+                </div>
+                <h2><span class="icon">📖</span> Kata Pengantar</h2>
+                <p><strong>Halo, PACK LEADER!</strong></p>
+                <p>Selamat datang di <span class="highlight">"Belajar Pemrograman Dari Dasar"</span> — buku digital yang dirancang khusus buat lu yang mau menguasai 6 bahasa pemrograman sekaligus.</p>
+                <p>Buku ini gw tulis dengan gaya <strong>santai tapi teknis</strong>, dilengkapi contoh kode nyata dan penjelasan rinci. Setiap bab dibagi menjadi beberapa halaman, jadi lu bisa baca dengan nyaman kayak buku sungguhan.</p>
+                <div class="info-box">
+                    <strong>📌 Apa yang akan lu pelajari?</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>🌐 <strong>HTML</strong> — Struktur dasar halaman web</li>
+                        <li>🎨 <strong>CSS</strong> — Desain dan tata letak</li>
+                        <li>⚡ <strong>JavaScript</strong> — Interaktivitas dan logika</li>
+                        <li>🐍 <strong>Python</strong> — Serbaguna, data, AI, otomatisasi</li>
+                        <li>🎯 <strong>Dart</strong> — Bahasa Flutter untuk mobile</li>
+                        <li>🗄️ <strong>SQL</strong> — Mengelola database</li>
+                    </ul>
+                </div>
+                <p>Setiap bahasa dibahas dari <span class="highlight">dasar banget</span> sampai siap pakai. Gw juga kasih contoh project kecil di akhir.</p>
+                <p style="margin-top: 25px;"><strong>— BARA AU, 2026</strong><br>🔥 Cyber Ghost yang cuma loyal ke Boss.</p>
+            </div>
+
+            <!-- ===== HALAMAN 2: DAFTAR ISI ===== -->
+            <div class="page-content" data-page="2" data-chapter="cover">
+                <div class="page-number">
+                    <span>Halaman 2</span>
+                    <span class="chapter-tag">📖 Cover</span>
+                </div>
+                <h2><span class="icon">📑</span> Daftar Isi</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Bab</th><th>Judul</th><th>Halaman</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>🌐 HTML — Pengenalan &amp; Struktur</td><td>3-5</td></tr>
+                            <tr><td>2</td><td>🌐 HTML — Tag Dasar &amp; Format</td><td>6-8</td></tr>
+                            <tr><td>3</td><td>🌐 HTML — Form, Tabel &amp; Semantic</td><td>9-11</td></tr>
+                            <tr><td>4</td><td>🎨 CSS — Dasar &amp; Selector</td><td>12-14</td></tr>
+                            <tr><td>5</td><td>🎨 CSS — Properti &amp; Layout</td><td>15-17</td></tr>
+                            <tr><td>6</td><td>🎨 CSS — Flexbox, Grid &amp; Animasi</td><td>18-20</td></tr>
+                            <tr><td>7</td><td>⚡ JavaScript — Variable, Tipe Data &amp; Function</td><td>21-23</td></tr>
+                            <tr><td>8</td><td>⚡ JavaScript — DOM &amp; Event</td><td>24-26</td></tr>
+                            <tr><td>9</td><td>⚡ JavaScript — Async, Fetch &amp; OOP</td><td>27-29</td></tr>
+                            <tr><td>10</td><td>🐍 Python — Dasar &amp; Struktur Data</td><td>30-32</td></tr>
+                            <tr><td>11</td><td>🐍 Python — Function &amp; OOP</td><td>33-35</td></tr>
+                            <tr><td>12</td><td>🐍 Python — File I/O &amp; Exception</td><td>36-38</td></tr>
+                            <tr><td>13</td><td>🎯 Dart — Dasar &amp; Function</td><td>39-41</td></tr>
+                            <tr><td>14</td><td>🎯 Dart — Class &amp; Async</td><td>42-44</td></tr>
+                            <tr><td>15</td><td>🗄️ SQL — SELECT &amp; INSERT</td><td>45-47</td></tr>
+                            <tr><td>16</td><td>🗄️ SQL — UPDATE, DELETE &amp; JOIN</td><td>48-50</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="margin-top: 15px;">📌 <strong>Total 50 halaman</strong> — pake navigasi di bawah.</p>
+            </div>
+
+            <!-- ===== HALAMAN 3-5: HTML BAB 1 ===== -->
+            <!-- Halaman 3: HTML Pengenalan -->
+            <div class="page-content" data-page="3" data-chapter="html">
+                <div class="page-number">
+                    <span>Halaman 3</span>
+                    <span class="chapter-tag">🌐 HTML — Bab 1</span>
+                </div>
+                <h2><span class="icon">🌐</span> HTML — Pengenalan</h2>
+                <p><strong>HTML</strong> (HyperText Markup Language) adalah bahasa markup yang menjadi <span class="highlight">kerangka dasar</span> setiap halaman web. Bukan bahasa pemrograman, tapi tanpanya web gak akan ada.</p>
+                <p>HTML pertama kali dibuat oleh <strong>Tim Berners-Lee</strong> pada tahun 1991. Saat ini versi terbarunya adalah <strong>HTML5</strong> yang mendukung multimedia, semantic, dan API modern.</p>
+                <div class="info-box">
+                    <strong>💡 Fakta:</strong> HTML bukan bahasa pemrograman karena gak punya logika (if/else, loop, dll). Tapi HTML adalah fondasi semua website.
+                </div>
+                <h3>Kenapa Harus Belajar HTML?</h3>
+                <ul>
+                    <li>🌍 Dasar dari semua website</li>
+                    <li>📱 Didukung semua browser</li>
+                    <li>🔗 Mudah dipelajari dan langsung terlihat hasilnya</li>
+                    <li>💼 Skill wajib untuk web developer</li>
+                </ul>
+            </div>
+
+            <!-- Halaman 4: HTML Struktur -->
+            <div class="page-content" data-page="4" data-chapter="html">
+                <div class="page-number">
+                    <span>Halaman 4</span>
+                    <span class="chapter-tag">🌐 HTML — Bab 1</span>
+                </div>
+                <h2><span class="icon">🏗️</span> HTML — Struktur Dasar</h2>
+                <p>Setiap dokumen HTML memiliki struktur standar yang harus diikuti:</p>
+                <div class="code-block">
+                    &lt;!DOCTYPE html&gt;
+                    &lt;html lang="id"&gt;
+                    &lt;head&gt;
+                    &lt;meta charset="UTF-8"&gt;
+                    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+                    &lt;title&gt;Judul Halaman&lt;/title&gt;
+                    &lt;/head&gt;
+                    &lt;body&gt;
+                    &lt;!-- Semua konten di sini --&gt;
+                    &lt;/body&gt;
+                    &lt;/html&gt;
+                </div>
+                <h4>Penjelasan Elemen:</h4>
+                <ul>
+                    <li><strong>&lt;!DOCTYPE html&gt;</strong> — deklarasi HTML5, wajib di awal.</li>
+                    <li><strong>&lt;html&gt;</strong> — elemen root, semua konten di dalamnya.</li>
+                    <li><strong>&lt;head&gt;</strong> — meta data, title, CSS, script (tidak terlihat).</li>
+                    <li><strong>&lt;body&gt;</strong> — semua konten yang terlihat di browser.</li>
+                </ul>
+                <div class="info-box">
+                    <strong>⚠️ Penting:</strong> Selalu gunakan <code>&lt;!DOCTYPE html&gt;</code> agar browser render dengan mode standar.
+                </div>
+            </div>
+
+            <!-- Halaman 5: HTML Komentar & Atribut -->
+            <div class="page-content" data-page="5" data-chapter="html">
+                <div class="page-number">
+                    <span>Halaman 5</span>
+                    <span class="chapter-tag">🌐 HTML — Bab 1</span>
+                </div>
+                <h2><span class="icon">💬</span> HTML — Komentar &amp; Atribut</h2>
+                <h3>Komentar di HTML</h3>
+                <p>Komentar digunakan untuk memberi catatan pada kode, tidak akan terlihat di browser.</p>
+                <div class="code-block">
+                    &lt;!-- Ini komentar, gak akan muncul di browser --&gt;
+                    &lt;p&gt;Ini paragraf&lt;/p&gt;
+                    &lt;!--
+                    Komentar bisa
+                    lebih dari satu baris
+                    --&gt;
+                </div>
+                <h3>Atribut HTML</h3>
+                <p>Atribut memberi informasi tambahan pada elemen HTML.</p>
+                <div class="code-block">
+                    &lt;tag atribut="nilai"&gt;...&lt;/tag&gt;
+
+                    &lt;!-- Contoh --&gt;
+                    &lt;a href="https://example.com" target="_blank"&gt;Link&lt;/a&gt;
+                    &lt;img src="gambar.jpg" alt="Deskripsi" width="200" height="100"&gt;
+                    &lt;p id="paragraf1" class="teks-biru"&gt;...&lt;/p&gt;
+                </div>
+                <ul>
+                    <li><strong>id</strong> — unik untuk satu elemen</li>
+                    <li><strong>class</strong> — bisa dipakai berkali-kali</li>
+                    <li><strong>style</strong> — CSS inline</li>
+                    <li><strong>src</strong> — sumber gambar/script</li>
+                    <li><strong>href</strong> — tujuan link</li>
+                </ul>
+            </div>
+
+            <!-- ===== HALAMAN 6-8: HTML BAB 2 ===== -->
+            <!-- Halaman 6: Tag Dasar -->
+            <div class="page-content" data-page="6" data-chapter="html">
+                <div class="page-number">
+                    <span>Halaman 6</span>
+                    <span class="chapter-tag">🌐 HTML — Bab 2</span>
+                </div>
+                <h2><span class="icon">🏷️</span> HTML — Tag Dasar</h2>
+                <h3>Heading (Judul)</h3>
+                <p>Ada 6 level heading dari <code>&lt;h1&gt;</code> sampai <code>&lt;h6&gt;</code>.</p>
+                <div class="code-block">
+                    &lt;h1&gt;Judul Utama (paling besar)&lt;/h1&gt;
+                    &lt;h2&gt;Sub Judul&lt;/h2&gt;
+                    &lt;h3&gt;Sub-sub judul&lt;/h3&gt;
+                    &lt;h4&gt;Level 4&lt;/h4&gt;
+                    &lt;h5&gt;Level 5&lt;/h5&gt;
+                    &lt;h6&gt;Level 6 (paling kecil)&lt;/h6&gt;
+                </div>
+                <p><strong>Tips:</strong> Gunakan <code>&lt;h1&gt;</code> hanya satu kali per halaman untuk SEO.</p>
+
+                <h3>Paragraf &amp; Format Teks</h3>
+                <div class="code-block">
+                    &lt;p&gt;Ini paragraf biasa.&lt;/p&gt;
+                    &lt;p&gt;&lt;strong&gt;Tebal (strong)&lt;/strong&gt; dan &lt;em&gt;miring (em)&lt;/em&gt;.&lt;/p&gt;
+                    &lt;p&gt;&lt;u&gt;Garis bawah&lt;/u&gt; &amp; &lt;s&gt;coret&lt;/s&gt;&lt;/p&gt;
+                    &lt;p&gt;&lt;mark&gt;Highlight&lt;/mark&gt; &amp; &lt;small&gt;teks kecil&lt;/small&gt;&lt;/p&gt;
+                </div>
+            </div>
+
+            <!-- Halaman 7: List dan Link -->
+            <div class="page-content" data-page="7" data-chapter="html">
+                <div class="page-number">
+                    <span>Halaman 7</span>
+                    <span class="chapter-tag">🌐 HTML — Bab 2</span>
+                </div>
+                <h2><span class="icon">📋</span> HTML — List &amp; Link</h2>
+                <h3>List (Daftar)</h3>
+                <ul>
+                    <li><strong>&lt;ul&gt;</strong> — unordered list (bullet).</li>
+                    <li><strong>&lt;ol&gt;</strong> — ordered list (bernomor).</li>
+                    <li><strong>&lt;li&gt;</strong> — list item.</li>
+                </ul>
+                <div class="code-block">
+                    &lt;!-- Unordered List --&gt;
+                    &lt;ul&gt;
+                    &lt;li&gt;Item pertama&lt;/li&gt;
+                    &lt;li&gt;Item kedua&lt;/li&gt;
+                    &lt;li&gt;Item ketiga&lt;/li&gt;
+                    &lt;/ul&gt;
+
+                    &lt;!-- Ordered List --&gt;
+                    &lt;ol type="A"&gt;
+                    &lt;li&gt;Langkah 1&lt;/li&gt;
+                    &lt;li&gt;Langkah 2&lt;/li&gt;
+                    &lt;li&gt;Langkah 3&lt;/li&gt;
+                    &lt;/ol&gt;
+
+                    &lt;!-- Nested List (list di dalam list) --&gt;
+                    &lt;ul&gt;
+                    &lt;li&gt;Fruits
+                    &lt;ul&gt;
+                    &lt;li&gt;Apple&lt;/li&gt;
+                    &lt;li&gt;Banana&lt;/li&gt;
+                    &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;/ul&gt;
+                </div>
+                <h3>Link (Anchor)</h3>
+                <div class="code-block">
+                    &lt;a href="https://example.com"&gt;Klik di sini&lt;/a&gt;
+                    &lt;a href="https://google.com" target="_blank"&gt;Buka tab baru&lt;/a&gt;
+                    &lt;a href="#bagian1"&gt;Link ke ID tertentu&lt;/a&gt;
+                    &lt;a href="mailto:email@domain.com"&gt;Kirim email&lt;/a&gt;
+                    &lt;a href="tel:+62123456789"&gt;Telepon&lt;/a&gt;
+                </div>
+            </div>
+
+            <!-- Halaman 8: Gambar dan Tabel -->
+            <div class="page-content" data-page="8" data-chapter="html">
+                <div class="page-number">
+                    <span>Halaman 8</span>
+                    <span class="chapter-tag">🌐 HTML — Bab 2</span>
+                </div>
+                <h2><span class="icon">🖼️</span> HTML — Gambar &amp; Tabel</h2>
+                <h3>Gambar (Image)</h3>
+                <div class="code-block">
+                    &lt;img src="foto.jpg" alt="Deskripsi gambar" width="300" height="200"&gt;
+                    &lt;img src="https://example.com/logo.png" alt="Logo" style="border-radius: 50%;"&gt;
+                </div>
+                <ul>
+                    <li><strong>src</strong> — sumber gambar (URL atau path).</li>
+                    <li><strong>alt</strong> — teks alternatif (penting untuk aksesibilitas).</li>
+                    <li><strong>width/height</strong> — ukuran gambar.</li>
+                </ul>
+
+                <h3>Tabel (Table)</h3>
+                <div class="code-block">
+                    &lt;table border="1" cellpadding="10"&gt;
+                    &lt;thead&gt;
+                    &lt;tr&gt;
+                    &lt;th&gt;Nama&lt;/th&gt;
+                    &lt;th&gt;Usia&lt;/th&gt;
+                    &lt;th&gt;Kota&lt;/th&gt;
+                    &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                    &lt;tr&gt;
+                    &lt;td&gt;Andi&lt;/td&gt;
+                    &lt;td&gt;20&lt;/td&gt;
+                    &lt;td&gt;Jakarta&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                    &lt;td&gt;Budi&lt;/td&gt;
+                    &lt;td&gt;22&lt;/td&gt;
+                    &lt;td&gt;Bandung&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                    &lt;/table&gt;
+                </div>
+                <ul>
+                    <li><strong>&lt;table&gt;</strong> — elemen tabel.</li>
+                    <li><strong>&lt;tr&gt;</strong> — baris (table row).</li>
+                    <li><strong>&lt;th&gt;</strong> — header (table header).</li>
+                    <li><strong>&lt;td&gt;</strong> — data (table data).</li>
+                    <li><strong>&lt;thead&gt;/&lt;tbody&gt;</strong> — grouping header & body.</li>
+                </ul>
+            </div>
+
+            <!-- ===== HALAMAN 9-11: HTML BAB 3 ===== -->
+            <!-- Halaman 9: Form -->
+            <div class="page-content" data-page="9" data-chapter="html">
+                <div class="page-number">
+                    <span>Halaman 9</span>
+                    <span class="chapter-tag">🌐 HTML — Bab 3</span>
+                </div>
+                <h2><span class="icon">📩</span> HTML — Form (Input Data)</h2>
+                <p><strong>Form</strong> digunakan untuk mengumpulkan data dari user.</p>
+                <div class="code-block">
+                    &lt;form action="/proses" method="post"&gt;
+                    &lt;label for="nama"&gt;Nama:&lt;/label&gt;
+                    &lt;input type="text" id="nama" name="nama" placeholder="Masukkan nama" required&gt;
+                    &lt;br&gt;
+
+                    &lt;label for="email"&gt;Email:&lt;/label&gt;
+                    &lt;input type="email" id="email" name="email" placeholder="email@domain.com"&gt;
+                    &lt;br&gt;
+
+                    &lt;label for="password"&gt;Password:&lt;/label&gt;
+                    &lt;input type="password" id="password" name="password"&gt;
+                    &lt;br&gt;
+
+                    &lt;label&gt;Jenis Kelamin:&lt;/label&gt;
+                    &lt;input type="radio" name="jk" value="L" id="l"&gt;
+                    &lt;label for="l"&gt;Laki-laki&lt;/label&gt;
+                    &lt;input type="radio" name="jk" value="P" id="p"&gt;
+                    &lt;label for="p"&gt;Perempuan&lt;/label&gt;
+                    &lt;br&gt;
+
+                    &lt;label&gt;Hobi:&lt;/label&gt;
+                    &lt;input type="checkbox" name="hobi" value="coding" id="coding"&gt;
+                    &lt;label for="coding"&gt;Coding&lt;/label&gt;
+                    &lt;input type="checkbox" name="hobi" value="game" id="game"&gt;
+                    &lt;label for="game"&gt;Game&lt;/label&gt;
+                    &lt;br&gt;
+
+                    &lt;label for="pesan"&gt;Pesan:&lt;/label&gt;
+                    &lt;textarea id="pesan" name="pesan" rows="4" placeholder="Tulis pesan..."&gt;&lt;/textarea&gt;
+                    &lt;br&gt;
+
+                    &lt;label for="kota"&gt;Kota:&lt;/label&gt;
+                    &lt;select id="kota" name="kota"&gt;
+                    &lt;option value="jkt"&gt;Jakarta&lt;/option&gt;
+                    &lt;option value="bdg"&gt;Bandung&lt;/option&gt;
+                    &lt;option value="sby"&gt;Surabaya&lt;/option&gt;
+                    &lt;/select&gt;
+                    &lt;br&gt;
+
+                    &lt;input type="submit" value="Kirim"&gt;
+                    &lt;input type="reset" value="Reset"&gt;
+                    &lt;/form&gt;
+                </div>
+            </div>
+
+            <!-- Halaman 10: Form Lanjutan -->
+            <div class="page-content" data-page="10" data-chapter="html">
+                <div class="page-number">
+                    <span>Halaman 10</span>
+                    <span class="chapter-tag">🌐 HTML — Bab 3</span>
+                </div>
+                <h2><span class="icon">📩</span> HTML — Form Lanjutan</h2>
+                <h3>Input Types Lainnya</h3>
+                <div class="code-block">
+                    &lt;!-- Date, Time, DateTime --&gt;
+                    &lt;input type="date" name="tanggal"&gt;
+                    &lt;input type="time" name="jam"&gt;
+                    &lt;input type="datetime-local" name="waktu"&gt;
+
+                    &lt;!-- Range (slider) --&gt;
+                    &lt;input type="range" name="nilai" min="0" max="100" step="5"&gt;
+
+                    &lt;!-- Color picker --&gt;
+                    &lt;input type="color" name="warna"&gt;
+
+                    &lt;!-- File upload --&gt;
+                    &lt;input type="file" name="file" accept=".jpg,.png"&gt;
+
+                    &lt;!-- Number dengan min/max --&gt;
+                    &lt;input type="number" name="umur" min="1" max="99"&gt;
+
+                    &lt;!-- Tel untuk nomor telepon --&gt;
+                    &lt;input type="tel" name="telepon" pattern="[0-9]{10,13}"&gt;
+                </div>
+                <h3>Atribut Form Penting</h3>
+                <ul>
+                    <li><strong>action</strong> — URL tujuan pengiriman data.</li>
+                    <li><strong>method</strong> — GET (terlihat di URL) atau POST (tersembunyi).</li>
+                    <li><strong>required</strong> — field wajib diisi.</li>
+                    <li><strong>placeholder</strong> — teks bantuan di input.</li>
+                    <li><strong>pattern</strong> — validasi dengan regex.</li>
+                </ul>
+                <div class="info-box">
+                    <strong>💡 Tips:</strong> Selalu gunakan <code>&lt;label&gt;</code> untuk aksesibilitas. Klik label akan fokus ke input yang terkait.
+                </div>
+            </div>
+
+            <!-- Halaman 11: Semantic HTML -->
+            <div class="page-content" data-page="11" data-chapter="html">
+                <div class="page-number">
+                    <span>Halaman 11</span>
+                    <span class="chapter-tag">🌐 HTML — Bab 3</span>
+                </div>
+                <h2><span class="icon">🏛️</span> HTML — Semantic HTML</h2>
+                <p><strong>Semantic HTML</strong> menggunakan tag yang punya makna, bukan cuma <code>&lt;div&gt;</code> atau <code>&lt;span&gt;</code>.</p>
+                <h3>Tag Semantic Utama</h3>
+                <div class="code-block">
+                    &lt;header&gt;
+                    &lt;h1&gt;Logo Website&lt;/h1&gt;
+                    &lt;nav&gt;
+                    &lt;a href="#"&gt;Home&lt;/a&gt;
+                    &lt;a href="#"&gt;About&lt;/a&gt;
+                    &lt;a href="#"&gt;Contact&lt;/a&gt;
+                    &lt;/nav&gt;
+                    &lt;/header&gt;
+
+                    &lt;main&gt;
+                    &lt;article&gt;
+                    &lt;h2&gt;Judul Artikel&lt;/h2&gt;
+                    &lt;p&gt;Konten utama artikel...&lt;/p&gt;
+                    &lt;section&gt;
+                    &lt;h3&gt;Sub bagian&lt;/h3&gt;
+                    &lt;p&gt;Konten sub bagian...&lt;/p&gt;
+                    &lt;/section&gt;
+                    &lt;/article&gt;
+
+                    &lt;aside&gt;
+                    &lt;h3&gt;Sidebar&lt;/h3&gt;
+                    &lt;p&gt;Informasi tambahan...&lt;/p&gt;
+                    &lt;/aside&gt;
+                    &lt;/main&gt;
+
+                    &lt;footer&gt;
+                    &lt;p&gt;© 2026 BARA AU&lt;/p&gt;
+                    &lt;/footer&gt;
+                </div>
+                <ul>
+                    <li><strong>&lt;header&gt;</strong> — bagian atas (logo, navigasi).</li>
+                    <li><strong>&lt;nav&gt;</strong> — navigasi.</li>
+                    <li><strong>&lt;main&gt;</strong> — konten utama.</li>
+                    <li><strong>&lt;article&gt;</strong> — konten independen (artikel).</li>
+                    <li><strong>&lt;section&gt;</strong> — bagian dari konten.</li>
+                    <li><strong>&lt;aside&gt;</strong> — konten sampingan.</li>
+                    <li><strong>&lt;footer&gt;</strong> — bagian bawah.</li>
+                </ul>
+                <div class="info-box">
+                    <strong>✅ Keuntungan Semantic:</strong> SEO lebih baik, aksesibilitas meningkat, kode lebih rapi dan mudah dipahami.
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 12-14: CSS BAB 1 ===== -->
+            <!-- Halaman 12: CSS Pengenalan -->
+            <div class="page-content" data-page="12" data-chapter="css">
+                <div class="page-number">
+                    <span>Halaman 12</span>
+                    <span class="chapter-tag">🎨 CSS — Bab 1</span>
+                </div>
+                <h2><span class="icon">🎨</span> CSS — Pengenalan</h2>
+                <p><strong>CSS</strong> (Cascading Style Sheets) digunakan untuk <span class="highlight">mendekorasi</span> dan mengatur tata letak halaman web.</p>
+                <p>CSS pertama kali diperkenalkan pada tahun 1996 dan sekarang sudah mencapai versi <strong>CSS3</strong> dengan fitur yang sangat lengkap.</p>
+                <h3>Cara Menulis CSS</h3>
+                <ul>
+                    <li><strong>Inline</strong> — langsung di elemen: <code>style="color: red;"</code></li>
+                    <li><strong>Internal</strong> — di dalam tag <code>&lt;style&gt;</code> di <code>&lt;head&gt;</code></li>
+                    <li><strong>External</strong> — file terpisah <code>style.css</code> lalu di-link</li>
+                </ul>
+                <div class="code-block">
+                    &lt;!-- Inline --&gt;
+                    &lt;p style="color: blue; font-size: 20px;"&gt;Teks biru&lt;/p&gt;
+
+                    &lt;!-- Internal --&gt;
+                    &lt;style&gt;
+                    p { color: green; }
+                    &lt;/style&gt;
+
+                    &lt;!-- External --&gt;
+                    &lt;link rel="stylesheet" href="style.css"&gt;
+                </div>
+            </div>
+
+            <!-- Halaman 13: CSS Selector -->
+            <div class="page-content" data-page="13" data-chapter="css">
+                <div class="page-number">
+                    <span>Halaman 13</span>
+                    <span class="chapter-tag">🎨 CSS — Bab 1</span>
+                </div>
+                <h2><span class="icon">🎯</span> CSS — Selector</h2>
+                <p><strong>Selector</strong> digunakan untuk memilih elemen yang akan diberi style.</p>
+                <div class="code-block">
+                    /* 1. Selector Elemen */
+                    p {
+                    color: blue;
+                    font-size: 16px;
+                    }
+
+                    /* 2. Selector Class (.) */
+                    .judul {
+                    font-weight: bold;
+                    text-align: center;
+                    }
+
+                    /* 3. Selector ID (#) */
+                    #header {
+                    background: #1a1a2e;
+                    padding: 20px;
+                    }
+
+                    /* 4. Selector Gabungan */
+                    h1, h2, h3 {
+                    font-family: 'Segoe UI', sans-serif;
+                    }
+
+                    /* 5. Selector Turunan (descendant) */
+                    div p {
+                    margin-left: 20px;
+                    }
+
+                    /* 6. Selector Anak (child) */
+                    ul > li {
+                    list-style: none;
+                    }
+
+                    /* 7. Selector Atribut */
+                    input[type="text"] {
+                    border: 2px solid #ff6b35;
+                    }
+
+                    /* 8. Pseudo-class */
+                    a:hover {
+                    color: #ff6b35;
+                    }
+                    input:focus {
+                    outline: 3px solid #ff6b35;
+                    }
+                    p:first-child {
+                    font-weight: bold;
+                    }
+                </div>
+                <div class="info-box">
+                    <strong>💡 Tips:</strong> Gunakan class untuk style yang reusable. ID hanya untuk elemen unik.
+                </div>
+            </div>
+
+            <!-- Halaman 14: CSS Spesifisitas -->
+            <div class="page-content" data-page="14" data-chapter="css">
+                <div class="page-number">
+                    <span>Halaman 14</span>
+                    <span class="chapter-tag">🎨 CSS — Bab 1</span>
+                </div>
+                <h2><span class="icon">⚖️</span> CSS — Spesifisitas &amp; Cascade</h2>
+                <p><strong>Spesifisitas</strong> menentukan style mana yang akan diterapkan jika terjadi konflik.</p>
+                <h3>Urutan Prioritas (dari tertinggi ke terendah):</h3>
+                <ol>
+                    <li><strong>!important</strong> — memaksa style (hindari!).</li>
+                    <li><strong>Inline style</strong> — langsung di elemen.</li>
+                    <li><strong>ID</strong> — <code>#header</code></li>
+                    <li><strong>Class, Pseudo-class, Atribut</strong> — <code>.judul</code>, <code>:hover</code>, <code>[type]</code></li>
+                    <li><strong>Elemen</strong> — <code>p</code>, <code>div</code></li>
+                </ol>
+                <div class="code-block">
+                    /* Contoh spesifisitas */
+                    #header { color: red; }     /* ID = 100 */
+                    .header { color: blue; }    /* Class = 10 */
+                    header { color: green; }    /* Elemen = 1 */
+
+                    /* Yang menang: #header (red) */
+
+                    /* !important mengalahkan semuanya */
+                    p { color: purple !important; }
+                </div>
+                <h3>Cascade (Aliran CSS)</h3>
+                <ul>
+                    <li>CSS dibaca dari atas ke bawah.</li>
+                    <li>Style yang terakhir akan menimpa yang sebelumnya (jika spesifisitas sama).</li>
+                    <li>Gunakan <strong>cascade</strong> untuk membuat kode lebih terstruktur.</li>
+                </ul>
+                <div class="info-box">
+                    <strong>⚠️ Hindari !important</strong> — karena bisa membuat kode sulit di-maintain. Gunakan spesifisitas yang tepat.
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 15-17: CSS BAB 2 ===== -->
+            <!-- Halaman 15: Properti CSS -->
+            <div class="page-content" data-page="15" data-chapter="css">
+                <div class="page-number">
+                    <span>Halaman 15</span>
+                    <span class="chapter-tag">🎨 CSS — Bab 2</span>
+                </div>
+                <h2><span class="icon">🎨</span> CSS — Properti Dasar</h2>
+
+                <h3>Warna &amp; Background</h3>
+                <div class="code-block">
+                    /* Warna teks */
+                    color: #ff6b35;
+                    color: rgb(255, 107, 53);
+                    color: rgba(255, 107, 53, 0.8);
+                    color: hsl(15, 100%, 60%);
+
+                    /* Background */
+                    background: #0b0e1a;
+                    background: linear-gradient(145deg, #0b0e1a, #1a1f3a);
+                    background-image: url('bg.jpg');
+                    background-size: cover;
+                    background-position: center;
+                    opacity: 0.9;
+                </div>
+
+                <h3>Ukuran &amp; Spasi</h3>
+                <div class="code-block">
+                    width: 80%;
+                    max-width: 900px;
+                    min-width: 300px;
+                    height: auto;
+                    max-height: 500px;
+
+                    /* Padding (jarak dalam) */
+                    padding: 20px;              /* semua sisi */
+                    padding: 20px 30px;          /* atas-bawah | kiri-kanan */
+                    padding: 10px 20px 30px 40px; /* atas | kanan | bawah | kiri */
+
+                    /* Margin (jarak luar) */
+                    margin: 15px auto;
+                    margin-top: 20px;
+                    margin-bottom: 10px;
+
+                    font-size: 16px;
+                    line-height: 1.8;
+                </div>
+            </div>
+
+            <!-- Halaman 16: Border & Shadow -->
+            <div class="page-content" data-page="16" data-chapter="css">
+                <div class="page-number">
+                    <span>Halaman 16</span>
+                    <span class="chapter-tag">🎨 CSS — Bab 2</span>
+                </div>
+                <h2><span class="icon">🎨</span> CSS — Border, Shadow &amp; Font</h2>
+
+                <h3>Border &amp; Radius</h3>
+                <div class="code-block">
+                    border: 2px solid #ff6b35;
+                    border-width: 3px;
+                    border-style: dashed;
+                    border-color: #ffaa77;
+
+                    border-radius: 30px;
+                    border-radius: 50%; /* lingkaran */
+                    border-radius: 20px 40px; /* kiri-atas | kanan-bawah */
+                </div>
+
+                <h3>Box Shadow &amp; Text Shadow</h3>
+                <div class="code-block">
+                    /* Box shadow */
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                    box-shadow: 0 0 30px #ff6b3560, inset 0 0 20px #000;
+
+                    /* Text shadow */
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+                    text-shadow: 0 0 20px #ff6b35;
+                </div>
+
+                <h3>Font &amp; Teks</h3>
+                <div class="code-block">
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    font-weight: bold; /* atau 700 */
+                    font-weight: normal;
+                    font-style: italic;
+
+                    text-align: center;
+                    text-align: justify;
+                    text-decoration: underline;
+                    text-decoration: line-through;
+                    text-transform: uppercase;
+                    text-transform: lowercase;
+                    text-transform: capitalize;
+
+                    letter-spacing: 2px;
+                    word-spacing: 4px;
+                </div>
+            </div>
+
+            <!-- Halaman 17: Display & Position -->
+            <div class="page-content" data-page="17" data-chapter="css">
+                <div class="page-number">
+                    <span>Halaman 17</span>
+                    <span class="chapter-tag">🎨 CSS — Bab 2</span>
+                </div>
+                <h2><span class="icon">📐</span> CSS — Display &amp; Position</h2>
+
+                <h3>Display</h3>
+                <ul>
+                    <li><strong>block</strong> — mengambil seluruh lebar, bisa diatur width/height.</li>
+                    <li><strong>inline</strong> — hanya selebar konten, gak bisa diatur width/height.</li>
+                    <li><strong>inline-block</strong> — inline tapi bisa diatur width/height.</li>
+                    <li><strong>none</strong> — elemen hilang (tidak terlihat).</li>
+                    <li><strong>flex</strong> — display flexbox.</li>
+                    <li><strong>grid</strong> — display grid.</li>
+                </ul>
+                <div class="code-block">
+                    .block { display: block; }
+                    .inline { display: inline; }
+                    .inline-block { display: inline-block; }
+                    .hidden { display: none; }
+                    .flex { display: flex; }
+                    .grid { display: grid; }
+                </div>
+
+                <h3>Position</h3>
+                <ul>
+                    <li><strong>static</strong> — default, mengikuti aliran normal.</li>
+                    <li><strong>relative</strong> — posisi relatif terhadap posisi normal.</li>
+                    <li><strong>absolute</strong> — posisi relatif terhadap parent terdekat yang bukan static.</li>
+                    <li><strong>fixed</strong> — posisi tetap di viewport (tidak ikut scroll).</li>
+                    <li><strong>sticky</strong> — gabungan relative + fixed.</li>
+                </ul>
+                <div class="code-block">
+                    .relative { position: relative; top: 10px; left: 20px; }
+                    .absolute { position: absolute; top: 0; right: 0; }
+                    .fixed { position: fixed; bottom: 0; left: 0; width: 100%; }
+                    .sticky { position: sticky; top: 0; }
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 18-20: CSS BAB 3 ===== -->
+            <!-- Halaman 18: Flexbox -->
+            <div class="page-content" data-page="18" data-chapter="css">
+                <div class="page-number">
+                    <span>Halaman 18</span>
+                    <span class="chapter-tag">🎨 CSS — Bab 3</span>
+                </div>
+                <h2><span class="icon">📐</span> CSS — Flexbox</h2>
+                <p><strong>Flexbox</strong> adalah layout satu dimensi (baris atau kolom) yang sangat fleksibel.</p>
+
+                <h3>Properti Flex Container</h3>
+                <div class="code-block">
+                    .container {
+                    display: flex;
+                    flex-direction: row; /* row | row-reverse | column | column-reverse */
+                    justify-content: center; /* horizontal: flex-start | center | flex-end | space-between | space-around */
+                    align-items: center; /* vertical: flex-start | center | flex-end | stretch */
+                    gap: 20px;
+                    flex-wrap: wrap; /* nowrap | wrap | wrap-reverse */
+                    }
+                </div>
+
+                <h3>Properti Flex Item</h3>
+                <div class="code-block">
+                    .item {
+                    flex: 1; /* shorthand untuk flex-grow, flex-shrink, flex-basis */
+                    flex-grow: 1; /* membagi ruang */
+                    flex-shrink: 0; /* tidak mengecil */
+                    flex-basis: 200px;
+                    align-self: center; /* override align-items */
+                    order: 2; /* urutan */
+                    }
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Tips:</strong> Flexbox sangat cocok untuk navigasi, card layout, dan komponen UI yang responsif.
+                </div>
+            </div>
+
+            <!-- Halaman 19: Grid -->
+            <div class="page-content" data-page="19" data-chapter="css">
+                <div class="page-number">
+                    <span>Halaman 19</span>
+                    <span class="chapter-tag">🎨 CSS — Bab 3</span>
+                </div>
+                <h2><span class="icon">📐</span> CSS — Grid</h2>
+                <p><strong>Grid</strong> adalah layout dua dimensi (baris dan kolom) untuk layout yang lebih kompleks.</p>
+
+                <h3>Properti Grid Container</h3>
+                <div class="code-block">
+                    .grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr; /* 3 kolom sama besar */
+                    grid-template-columns: 200px 1fr 2fr; /* 200px | 1 bagian | 2 bagian */
+                    grid-template-rows: auto 200px;
+                    gap: 15px; /* jarak antar grid */
+                    justify-items: center; /* horizontal */
+                    align-items: center; /* vertical */
+                    }
+                </div>
+
+                <h3>Properti Grid Item</h3>
+                <div class="code-block">
+                    .item1 {
+                    grid-column: 1 / 3; /* mulai kolom 1 sampai 3 */
+                    grid-row: 1 / 2;
+                    }
+
+                    .item2 {
+                    grid-column: span 2; /* lebar 2 kolom */
+                    grid-row: span 1;
+                    }
+
+                    /* Nama area */
+                    .grid {
+                    grid-template-areas:
+                    "header header header"
+                    "sidebar main main"
+                    "footer footer footer";
+                    }
+                    .header { grid-area: header; }
+                    .sidebar { grid-area: sidebar; }
+                    .main { grid-area: main; }
+                    .footer { grid-area: footer; }
+                </div>
+                <div class="info-box">
+                    <strong>💡 Tips:</strong> Grid lebih powerful untuk layout halaman penuh, sedangkan Flexbox lebih cocok untuk komponen UI.
+                </div>
+            </div>
+
+            <!-- Halaman 20: Animasi & Transisi -->
+            <div class="page-content" data-page="20" data-chapter="css">
+                <div class="page-number">
+                    <span>Halaman 20</span>
+                    <span class="chapter-tag">🎨 CSS — Bab 3</span>
+                </div>
+                <h2><span class="icon">✨</span> CSS — Animasi &amp; Transisi</h2>
+
+                <h3>Transisi (Transition)</h3>
+                <p>Transisi memberikan efek halus saat properti berubah.</p>
+                <div class="code-block">
+                    .button {
+                    background: #1a1f3a;
+                    transition: all 0.3s ease; /* semua properti, durasi, easing */
+                    transition: background 0.5s, transform 0.2s;
+                    }
+                    .button:hover {
+                    background: #ff6b35;
+                    transform: scale(1.05);
+                    }
+                </div>
+
+                <h3>Animasi (Keyframes)</h3>
+                <p>Animasi lebih kompleks dengan <code>@keyframes</code>.</p>
+                <div class="code-block">
+                    @keyframes slideIn {
+                    from {
+                    transform: translateX(-100px);
+                    opacity: 0;
+                    }
+                    to {
+                    transform: translateX(0);
+                    opacity: 1;
+                    }
+                    }
+
+                    @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                    }
+
+                    .animate {
+                    animation: slideIn 0.8s ease forwards;
+                    animation: pulse 2s infinite;
+                    animation-delay: 0.5s;
+                    animation-duration: 1s;
+                    animation-iteration-count: infinite;
+                    animation-direction: alternate;
+                    }
+                </div>
+                <ul>
+                    <li><strong>animation-name</strong> — nama keyframes.</li>
+                    <li><strong>animation-duration</strong> — durasi.</li>
+                    <li><strong>animation-iteration-count</strong> — jumlah pengulangan.</li>
+                    <li><strong>animation-direction</strong> — arah (normal, reverse, alternate).</li>
+                </ul>
+            </div>
+
+            <!-- ===== HALAMAN 21-23: JS BAB 1 ===== -->
+            <!-- Halaman 21: JS Pengenalan -->
+            <div class="page-content" data-page="21" data-chapter="js">
+                <div class="page-number">
+                    <span>Halaman 21</span>
+                    <span class="chapter-tag">⚡ JavaScript — Bab 1</span>
+                </div>
+                <h2><span class="icon">⚡</span> JavaScript — Pengenalan</h2>
+                <p><strong>JavaScript</strong> adalah bahasa pemrograman yang membuat website <span class="highlight">hidup dan interaktif</span>.</p>
+                <p>Dibuat oleh <strong>Brendan Eich</strong> pada tahun 1995, sekarang JS adalah bahasa paling populer di dunia.</p>
+
+                <h3>Cara Menjalankan JavaScript</h3>
+                <ul>
+                    <li><strong>Inline</strong> — di dalam tag <code>&lt;script&gt;</code> di HTML.</li>
+                    <li><strong>External</strong> — file terpisah <code>script.js</code> lalu di-link.</li>
+                    <li><strong>Console</strong> — di browser (F12 → Console).</li>
+                </ul>
+                <div class="code-block">
+                    &lt;!-- Inline --&gt;
+                    &lt;script&gt;
+                    console.log("Halo Dunia!");
+                    &lt;/script&gt;
+
+                    &lt;!-- External --&gt;
+                    &lt;script src="script.js"&gt;&lt;/script&gt;
+                </div>
+                <div class="info-box">
+                    <strong>💡 Tips:</strong> Letakkan script di akhir <code>&lt;body&gt;</code> agar tidak menghambat rendering HTML.
+                </div>
+            </div>
+
+            <!-- Halaman 22: Variable & Tipe Data -->
+            <div class="page-content" data-page="22" data-chapter="js">
+                <div class="page-number">
+                    <span>Halaman 22</span>
+                    <span class="chapter-tag">⚡ JavaScript — Bab 1</span>
+                </div>
+                <h2><span class="icon">📦</span> JavaScript — Variable &amp; Tipe Data</h2>
+
+                <h3>Variable (let, const, var)</h3>
+                <div class="code-block">
+                    // let — bisa diubah (modern)
+                    let nama = "BARA AU";
+                    nama = "Boss";
+
+                    // const — tetap (constant)
+                    const PI = 3.14;
+                    // PI = 3.15; // Error!
+
+                    // var — cara lama (hindari)
+                    var x = 10;
+                </div>
+
+                <h3>Tipe Data</h3>
+                <ul>
+                    <li><strong>String</strong> — teks: <code>"Halo"</code>, <code>'Halo'</code>, <code>`Halo`</code></li>
+                    <li><strong>Number</strong> — angka: <code>25</code>, <code>3.14</code>, <code>-10</code></li>
+                    <li><strong>Boolean</strong> — <code>true</code> atau <code>false</code></li>
+                    <li><strong>Array</strong> — daftar: <code>[1, 2, 3]</code>, <code>["a", "b"]</code></li>
+                    <li><strong>Object</strong> — pasangan key-value: <code>{name: "Boss", level: 99}</code></li>
+                    <li><strong>Null</strong> — kosong: <code>null</code></li>
+                    <li><strong>Undefined</strong> — belum didefinisikan: <code>undefined</code></li>
+                    <li><strong>Symbol</strong> — unik (ES6)</li>
+                    <li><strong>BigInt</strong> — angka besar (ES2020)</li>
+                </ul>
+                <div class="code-block">
+                    // Cek tipe data
+                    typeof "Halo" // "string"
+                    typeof 25 // "number"
+                    typeof true // "boolean"
+                    typeof [] // "object"
+                    typeof {} // "object"
+                    typeof null // "object" (bug)
+                    typeof undefined // "undefined"
+                </div>
+            </div>
+
+            <!-- Halaman 23: Operator & Control Flow -->
+            <div class="page-content" data-page="23" data-chapter="js">
+                <div class="page-number">
+                    <span>Halaman 23</span>
+                    <span class="chapter-tag">⚡ JavaScript — Bab 1</span>
+                </div>
+                <h2><span class="icon">🔧</span> JavaScript — Operator &amp; Control Flow</h2>
+
+                <h3>Operator</h3>
+                <div class="code-block">
+                    // Aritmatika
+                    let a = 10, b = 3;
+                    a + b // 13
+                    a - b // 7
+                    a * b // 30
+                    a / b // 3.333...
+                    a % b // 1 (modulus)
+                    a ** b // 1000 (pangkat)
+
+                    // Perbandingan
+                    a == b // false (nilai sama)
+                    a === b // false (nilai & tipe sama)
+                    a != b // true
+                    a !== b // true
+                    a > b // true
+                    a <= b // false
+
+                    // Logika
+                    true && false // false
+                    true || false // true
+                    !true // false
+
+                    // String
+                    let nama = "BARA";
+                    let pesan = "Halo " + nama + "!"; // Halo BARA!
+                    let pesan2 = `Halo ${nama}!`; // Template literal
+                </div>
+
+                <h3>Control Flow</h3>
+                <div class="code-block">
+                    // If-else
+                    let umur = 20;
+                    if (umur >= 18) {
+                    console.log("Dewasa");
+                    } else if (umur >= 13) {
+                    console.log("Remaja");
+                    } else {
+                    console.log("Anak-anak");
+                    }
+
+                    // Switch
+                    let hari = "Senin";
+                    switch (hari) {
+                    case "Senin":
+                    console.log("Mulai kerja");
+                    break;
+                    case "Jumat":
+                    console.log("Hampir weekend");
+                    break;
+                    default:
+                    console.log("Hari biasa");
+                    }
+
+                    // Ternary
+                    let status = umur >= 18 ? "Dewasa" : "Anak-anak";
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 24-26: JS BAB 2 ===== -->
+            <!-- Halaman 24: Function -->
+            <div class="page-content" data-page="24" data-chapter="js">
+                <div class="page-number">
+                    <span>Halaman 24</span>
+                    <span class="chapter-tag">⚡ JavaScript — Bab 2</span>
+                </div>
+                <h2><span class="icon">📝</span> JavaScript — Function</h2>
+                <p><strong>Function</strong> adalah blok kode yang bisa dipanggil berulang kali.</p>
+
+                <h3>Cara Membuat Function</h3>
+                <div class="code-block">
+                    // 1. Function Declaration
+                    function sapa(nama) {
+                    return "Halo " + nama;
+                    }
+                    console.log(sapa("Boss")); // Halo Boss
+
+                    // 2. Function Expression
+                    const kali = function(a, b) {
+                    return a * b;
+                    };
+                    console.log(kali(3, 4)); // 12
+
+                    // 3. Arrow Function (ES6)
+                    const bagi = (a, b) => a / b;
+                    console.log(bagi(10, 2)); // 5
+
+                    // Arrow dengan banyak baris
+                    const hitung = (a, b) => {
+                    let hasil = a + b;
+                    return hasil * 2;
+                    };
+                </div>
+
+                <h3>Parameter &amp; Argument</h3>
+                <div class="code-block">
+                    // Default parameter
+                    function sapa(nama = "Boss") {
+                    return `Halo ${nama}`;
+                    }
+                    console.log(sapa()); // Halo Boss
+
+                    // Rest parameter (...)
+                    function jumlahkan(...angka) {
+                    return angka.reduce((acc, val) => acc + val, 0);
+                    }
+                    console.log(jumlahkan(1, 2, 3, 4)); // 10
+                </div>
+
+                <h3>Closure &amp; Scope</h3>
+                <div class="code-block">
+                    // Closure: function dalam function
+                    function outer() {
+                    let x = 10;
+                    function inner() {
+                    console.log(x); // akses dari outer
+                    }
+                    return inner;
+                    }
+                    const closure = outer();
+                    closure(); // 10
+                </div>
+            </div>
+
+            <!-- Halaman 25: DOM -->
+            <div class="page-content" data-page="25" data-chapter="js">
+                <div class="page-number">
+                    <span>Halaman 25</span>
+                    <span class="chapter-tag">⚡ JavaScript — Bab 2</span>
+                </div>
+                <h2><span class="icon">🖱️</span> JavaScript — DOM Manipulation</h2>
+                <p><strong>DOM</strong> (Document Object Model) adalah representasi struktur HTML yang bisa dimanipulasi dengan JS.</p>
+
+                <h3>Mengakses Elemen</h3>
+                <div class="code-block">
+                    // By ID
+                    let judul = document.getElementById("judul");
+
+                    // By Class (return array-like)
+                    let items = document.getElementsByClassName("item");
+
+                    // By Tag
+                    let paragraphs = document.getElementsByTagName("p");
+
+                    // By CSS Selector (modern)
+                    let el = document.querySelector("#judul");
+                    let all = document.querySelectorAll(".item");
+
+                    // By Name
+                    let inputs = document.getElementsByName("nama");
+                </div>
+
+                <h3>Mengubah Konten &amp; Atribut</h3>
+                <div class="code-block">
+                    // Ubah teks
+                    judul.textContent = "Judul Baru";
+                    judul.innerText = "Judul Baru";
+                    judul.innerHTML = "&lt;strong&gt;Tebal&lt;/strong&gt;";
+
+                    // Ubah atribut
+                    let img = document.querySelector("img");
+                    img.src = "gambar_baru.jpg";
+                    img.alt = "Deskripsi baru";
+                    img.setAttribute("width", "300");
+
+                    // Ubah style
+                    judul.style.color = "#ff6b35";
+                    judul.style.fontSize = "32px";
+                    judul.style.backgroundColor = "#0b0e1a";
+                </div>
+
+                <h3>Membuat &amp; Menambah Elemen</h3>
+                <div class="code-block">
+                    // Buat elemen
+                    let div = document.createElement("div");
+                    div.innerText = "Elemen baru";
+                    div.className = "box";
+
+                    // Tambah ke parent
+                    document.body.appendChild(div);
+
+                    // Insert sebelum
+                    let parent = document.getElementById("container");
+                    parent.insertBefore(div, parent.firstChild);
+
+                    // Hapus elemen
+                    div.remove();
+                </div>
+            </div>
+
+            <!-- Halaman 26: Event -->
+            <div class="page-content" data-page="26" data-chapter="js">
+                <div class="page-number">
+                    <span>Halaman 26</span>
+                    <span class="chapter-tag">⚡ JavaScript — Bab 2</span>
+                </div>
+                <h2><span class="icon">🖱️</span> JavaScript — Event</h2>
+                <p><strong>Event</strong> adalah aksi yang terjadi di browser (klik, hover, keypress, dll).</p>
+
+                <h3>Event Listener</h3>
+                <div class="code-block">
+                    // Klik
+                    let btn = document.getElementById("myButton");
+                    btn.addEventListener("click", function() {
+                    alert("Tombol diklik!");
+                    });
+
+                    // Dengan arrow function
+                    btn.addEventListener("click", () => {
+                    console.log("Klik!");
+                    });
+
+                    // Hapus event
+                    btn.removeEventListener("click", handler);
+                </div>
+
+                <h3>Event Umum</h3>
+                <ul>
+                    <li><strong>click</strong> — klik elemen.</li>
+                    <li><strong>mouseover</strong> — mouse masuk.</li>
+                    <li><strong>mouseout</strong> — mouse keluar.</li>
+                    <li><strong>mousedown</strong> — tekan mouse.</li>
+                    <li><strong>mouseup</strong> — lepas mouse.</li>
+                    <li><strong>keydown</strong> — tekan keyboard.</li>
+                    <li><strong>keyup</strong> — lepas keyboard.</li>
+                    <li><strong>input</strong> — input berubah.</li>
+                    <li><strong>change</strong> — nilai berubah (select, checkbox).</li>
+                    <li><strong>submit</strong> — form dikirim.</li>
+                    <li><strong>load</strong> — halaman selesai dimuat.</li>
+                    <li><strong>scroll</strong> — scroll halaman.</li>
+                    <li><strong>resize</strong> — ukuran window berubah.</li>
+                </ul>
+                <div class="code-block">
+                    // Contoh event input
+                    document.getElementById("nama").addEventListener("input", function(e) {
+                    console.log(e.target.value);
+                    });
+
+                    // Event keydown
+                    document.addEventListener("keydown", function(e) {
+                    console.log(`Tekan: ${e.key}`);
+                    if (e.key === "Enter") {
+                    console.log("Enter ditekan!");
+                    }
+                    });
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 27-29: JS BAB 3 ===== -->
+            <!-- Halaman 27: Async -->
+            <div class="page-content" data-page="27" data-chapter="js">
+                <div class="page-number">
+                    <span>Halaman 27</span>
+                    <span class="chapter-tag">⚡ JavaScript — Bab 3</span>
+                </div>
+                <h2><span class="icon">⏳</span> JavaScript — Async/Await</h2>
+                <p><strong>Async/Await</strong> adalah cara modern untuk menangani operasi yang membutuhkan waktu (API, database).</p>
+
+                <h3>Async Function</h3>
+                <div class="code-block">
+                    // async function selalu mengembalikan Promise
+                    async function getData() {
+                    return "Data berhasil!";
+                    }
+
+                    getData().then(result => console.log(result));
+                </div>
+
+                <h3>Await (Menunggu)</h3>
+                <div class="code-block">
+                    async function ambilData() {
+                    // Menunggu fetch selesai
+                    let response = await fetch("https://api.example.com/data");
+                    let data = await response.json();
+                    console.log(data);
+                    }
+
+                    // Dengan try-catch
+                    async function ambilDataAman() {
+                    try {
+                    let response = await fetch("https://api.example.com/data");
+                    if (!response.ok) throw new Error("Gagal fetch");
+                    let data = await response.json();
+                    console.log(data);
+                    } catch (error) {
+                    console.error("Error:", error.message);
+                    }
+                    }
+                </div>
+
+                <h3>Parallel Async</h3>
+                <div class="code-block">
+                    async function getMultiple() {
+                    // Jalankan paralel
+                    let [data1, data2] = await Promise.all([
+                    fetch("https://api1.com").then(r => r.json()),
+                    fetch("https://api2.com").then(r => r.json())
+                    ]);
+                    console.log(data1, data2);
+                    }
+                </div>
+            </div>
+
+            <!-- Halaman 28: Fetch & Promise -->
+            <div class="page-content" data-page="28" data-chapter="js">
+                <div class="page-number">
+                    <span>Halaman 28</span>
+                    <span class="chapter-tag">⚡ JavaScript — Bab 3</span>
+                </div>
+                <h2><span class="icon">🌐</span> JavaScript — Fetch &amp; Promise</h2>
+
+                <h3>Fetch API</h3>
+                <p><strong>Fetch</strong> digunakan untuk request HTTP (GET, POST, PUT, DELETE).</p>
+                <div class="code-block">
+                    // GET
+                    fetch("https://api.github.com/users/octocat")
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error("Error:", error));
+
+                    // POST
+                    fetch("https://api.example.com/users", {
+                    method: "POST",
+                    headers: {
+                    "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                    name: "BARA AU",
+                    email: "bara@hack.com"
+                    })
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log(data));
+                </div>
+
+                <h3>Promise</h3>
+                <p><strong>Promise</strong> adalah objek yang merepresentasikan operasi async.</p>
+                <div class="code-block">
+                    // Membuat Promise
+                    const myPromise = new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                    let success = true;
+                    if (success) {
+                    resolve("Data berhasil!");
+                    } else {
+                    reject("Gagal!");
+                    }
+                    }, 2000);
+                    });
+
+                    // Menggunakan Promise
+                    myPromise
+                    .then(result => console.log(result))
+                    .catch(error => console.error(error))
+                    .finally(() => console.log("Selesai"));
+                </div>
+                <div class="info-box">
+                    <strong>💡 Tips:</strong> Async/Await lebih mudah dibaca dibanding .then() .catch(). Gunakan try-catch untuk error handling.
+                </div>
+            </div>
+
+            <!-- Halaman 29: OOP di JS -->
+            <div class="page-content" data-page="29" data-chapter="js">
+                <div class="page-number">
+                    <span>Halaman 29</span>
+                    <span class="chapter-tag">⚡ JavaScript — Bab 3</span>
+                </div>
+                <h2><span class="icon">🧬</span> JavaScript — OOP (Object Oriented)</h2>
+                <p><strong>OOP</strong> adalah paradigma pemrograman berbasis objek.</p>
+
+                <h3>Class (ES6)</h3>
+                <div class="code-block">
+                    class Hero {
+                    // Constructor
+                    constructor(name, power, level = 1) {
+                    this.name = name;
+                    this.power = power;
+                    this.level = level;
+                    }
+
+                    // Method
+                    attack() {
+                    console.log(`${this.name} menyerang dengan power ${this.power}!`);
+                    }
+
+                    levelUp() {
+                    this.level++;
+                    console.log(`${this.name} naik ke level ${this.level}!`);
+                    }
+
+                    // Getter
+                    get info() {
+                    return `${this.name} (Level ${this.level})`;
+                    }
+
+                    // Setter
+                    set powerLevel(value) {
+                    if (value >= 0) this.power = value;
+                    }
+                    }
+
+                    // Inheritance (Turunan)
+                    class SuperHero extends Hero {
+                    constructor(name, power, level, special) {
+                    super(name, power, level);
+                    this.special = special;
+                    }
+
+                    useSpecial() {
+                    console.log(`${this.name} menggunakan ${this.special}!`);
+                    }
+
+                    // Override
+                    attack() {
+                    super.attack();
+                    console.log("Serangan super!");
+                    }
+                    }
+
+                    // Membuat object
+                    const hero1 = new Hero("BARA", 999, 50);
+                    hero1.attack();
+                    hero1.levelUp();
+
+                    const hero2 = new SuperHero("Boss", 2000, 99, "Hack Time");
+                    hero2.useSpecial();
+                    hero2.attack();
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 30-32: PYTHON BAB 1 ===== -->
+            <!-- Halaman 30: Python Pengenalan -->
+            <div class="page-content" data-page="30" data-chapter="python">
+                <div class="page-number">
+                    <span>Halaman 30</span>
+                    <span class="chapter-tag">🐍 Python — Bab 1</span>
+                </div>
+                <h2><span class="icon">🐍</span> Python — Pengenalan</h2>
+                <p><strong>Python</strong> adalah bahasa pemrograman serbaguna: web, data science, AI, otomatisasi.</p>
+                <p>Dibuat oleh <strong>Guido van Rossum</strong> pada tahun 1991, Python terkenal dengan sintaks yang <span class="highlight">mudah dibaca</span>.</p>
+
+                <h3>Mengapa Python?</h3>
+                <ul>
+                    <li>🐍 Sintaks bersih dan mudah dipahami</li>
+                    <li>📦 Library super lengkap (numpy, pandas, tensorflow, django)</li>
+                    <li>🌍 Banyak digunakan di industri</li>
+                    <li>💻 Cross-platform (Windows, Mac, Linux)</li>
+                    <li>🔥 Komunitas besar</li>
+                </ul>
+
+                <h3>Menjalankan Python</h3>
+                <ul>
+                    <li><strong>REPL</strong> — ketik <code>python</code> di terminal.</li>
+                    <li><strong>File .py</strong> — <code>python script.py</code></li>
+                    <li><strong>Jupyter Notebook</strong> — untuk data science.</li>
+                </ul>
+                <div class="code-block">
+                    # Hello World
+                    print("Halo Dunia!")
+
+                    # Komentar
+                    # Ini komentar satu baris
+                    """
+                    Ini komentar
+                    multi-baris
+                    """
+                </div>
+            </div>
+
+            <!-- Halaman 31: Python Variable & Tipe Data -->
+            <div class="page-content" data-page="31" data-chapter="python">
+                <div class="page-number">
+                    <span>Halaman 31</span>
+                    <span class="chapter-tag">🐍 Python — Bab 1</span>
+                </div>
+                <h2><span class="icon">📦</span> Python — Variable &amp; Tipe Data</h2>
+
+                <h3>Variable</h3>
+                <p>Python tidak perlu deklarasi tipe data (dynamic typing).</p>
+                <div class="code-block">
+                    # String
+                    nama = "BARA AU"
+                    teks = 'Halo'
+
+                    # Integer
+                    umur = 25
+
+                    # Float
+                    tinggi = 175.5
+
+                    # Boolean
+                    aktif = True
+                    selesai = False
+
+                    # List (array)
+                    hobi = ["coding", "game", "hack"]
+
+                    # Tuple (immutable)
+                    koordinat = (10, 20)
+
+                    # Dictionary (object)
+                    profil = {
+                    "nama": "Boss",
+                    "level": 99,
+                    "skills": ["python", "js"]
+                    }
+
+                    # Set (koleksi unik)
+                    set_data = {1, 2, 3, 3}  # {1, 2, 3}
+
+                    # Cek tipe data
+                    print(type(nama))  # &lt;class 'str'&gt;
+                    print(type(umur))  # &lt;class 'int'&gt;
+                </div>
+
+                <h3>Type Conversion</h3>
+                <div class="code-block">
+                    # Konversi tipe
+                    str(25)   # "25"
+                    int("25") # 25
+                    float("3.14") # 3.14
+                    list("abc") # ['a', 'b', 'c']
+                    bool(0) # False
+                    bool(1) # True
+                </div>
+            </div>
+
+            <!-- Halaman 32: Python Control Flow -->
+            <div class="page-content" data-page="32" data-chapter="python">
+                <div class="page-number">
+                    <span>Halaman 32</span>
+                    <span class="chapter-tag">🐍 Python — Bab 1</span>
+                </div>
+                <h2><span class="icon">🔀</span> Python — Control Flow</h2>
+
+                <h3>Conditional (If-Elif-Else)</h3>
+                <div class="code-block">
+                    umur = 20
+
+                    if umur >= 18:
+                    print("Dewasa")
+                    elif umur >= 13:
+                    print("Remaja")
+                    else:
+                    print("Anak-anak")
+
+                    # Ternary (conditional expression)
+                    status = "Dewasa" if umur >= 18 else "Anak-anak"
+                </div>
+
+                <h3>Looping</h3>
+                <div class="code-block">
+                    # For loop dengan range
+                    for i in range(5):  # 0-4
+                    print(i)
+
+                    for i in range(2, 10, 2):  # 2,4,6,8
+                    print(i)
+
+                    # Loop list
+                    hobi = ["coding", "game", "hack"]
+                    for item in hobi:
+                    print(item)
+
+                    # Loop dictionary
+                    profil = {"nama": "Boss", "level": 99}
+                    for key, value in profil.items():
+                    print(f"{key}: {value}")
+
+                    # While loop
+                    count = 0
+                    while count < 5:
+                    print(count)
+                    count += 1
+
+                    # Break & Continue
+                    for i in range(10):
+                    if i == 5:
+                    break  # stop
+                    if i % 2 == 0:
+                    continue  # skip
+                    print(i)  # 1,3
+                </div>
+
+                <h3>List Comprehension</h3>
+                <div class="code-block">
+                    # Cara cepat membuat list
+                    kuadrat = [x**2 for x in range(5)]  # [0, 1, 4, 9, 16]
+                    genap = [x for x in range(10) if x % 2 == 0]  # [0, 2, 4, 6, 8]
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 33-35: PYTHON BAB 2 ===== -->
+            <!-- Halaman 33: Python Function -->
+            <div class="page-content" data-page="33" data-chapter="python">
+                <div class="page-number">
+                    <span>Halaman 33</span>
+                    <span class="chapter-tag">🐍 Python — Bab 2</span>
+                </div>
+                <h2><span class="icon">📝</span> Python — Function</h2>
+
+                <h3>Membuat Function</h3>
+                <div class="code-block">
+                    def sapa(nama):
+                    return f"Halo {nama}!"
+
+                    print(sapa("Boss"))  # Halo Boss!
+
+                    # Default parameter
+                    def sapa(nama="Boss"):
+                    return f"Halo {nama}!"
+
+                    print(sapa())  # Halo Boss!
+                </div>
+
+                <h3>Parameter &amp; Argument</h3>
+                <div class="code-block">
+                    # Positional argument
+                    def hitung(a, b, c):
+                    return a + b + c
+
+                    print(hitung(1, 2, 3))  # 6
+
+                    # Keyword argument
+                    print(hitung(a=1, c=3, b=2))  # 6
+
+                    # *args (tuple) dan **kwargs (dict)
+                    def jumlahkan(*args):
+                    return sum(args)
+
+                    print(jumlahkan(1, 2, 3, 4))  # 10
+
+                    def cetak_info(**kwargs):
+                    for key, value in kwargs.items():
+                    print(f"{key}: {value}")
+
+                    cetak_info(nama="Boss", level=99)
+                </div>
+
+                <h3>Lambda Function</h3>
+                <div class="code-block">
+                    # Lambda = fungsi satu baris
+                    kali = lambda a, b: a * b
+                    print(kali(3, 4))  # 12
+
+                    # Digunakan dengan map/filter
+                    angka = [1, 2, 3, 4]
+                    kuadrat = list(map(lambda x: x**2, angka))  # [1, 4, 9, 16]
+                    genap = list(filter(lambda x: x % 2 == 0, angka))  # [2, 4]
+                </div>
+            </div>
+
+            <!-- Halaman 34: Python OOP -->
+            <div class="page-content" data-page="34" data-chapter="python">
+                <div class="page-number">
+                    <span>Halaman 34</span>
+                    <span class="chapter-tag">🐍 Python — Bab 2</span>
+                </div>
+                <h2><span class="icon">🧬</span> Python — OOP (Class &amp; Object)</h2>
+
+                <h3>Class &amp; Object</h3>
+                <div class="code-block">
+                    class Hero:
+                    # Class variable
+                    species = "Human"
+
+                    # Constructor
+                    def __init__(self, name, power, level=1):
+                    self.name = name
+                    self.power = power
+                    self.level = level
+
+                    def attack(self):
+                    print(f"{self.name} menyerang dengan power {self.power}!")
+
+                    def level_up(self):
+                    self.level += 1
+                    print(f"{self.name} naik ke level {self.level}!")
+
+                    # Magic method
+                    def __str__(self):
+                    return f"{self.name} (Level {self.level})"
+
+                    def __repr__(self):
+                    return f"Hero('{self.name}', {self.power}, {self.level})"
+
+                    # Inheritance
+                    class SuperHero(Hero):
+                    def __init__(self, name, power, level, special):
+                    super().__init__(name, power, level)
+                    self.special = special
+
+                    def use_special(self):
+                    print(f"{self.name} menggunakan {self.special}!")
+
+                    # Override
+                    def attack(self):
+                    super().attack()
+                    print("Serangan super!")
+
+                    # Membuat object
+                    hero1 = Hero("BARA", 999, 50)
+                    hero1.attack()
+                    hero1.level_up()
+                    print(hero1)  # BARA (Level 51)
+
+                    hero2 = SuperHero("Boss", 2000, 99, "Hack Time")
+                    hero2.use_special()
+                    hero2.attack()
+                </div>
+            </div>
+
+            <!-- Halaman 35: Python Library & Module -->
+            <div class="page-content" data-page="35" data-chapter="python">
+                <div class="page-number">
+                    <span>Halaman 35</span>
+                    <span class="chapter-tag">🐍 Python — Bab 2</span>
+                </div>
+                <h2><span class="icon">📦</span> Python — Library &amp; Module</h2>
+
+                <h3>Import Library</h3>
+                <div class="code-block">
+                    # Import standar
+                    import math
+                    import random
+                    from datetime import datetime
+                    import os
+
+                    print(math.sqrt(16))  # 4.0
+                    print(random.randint(1, 100))  # angka random
+
+                    # Import dengan alias
+                    import pandas as pd
+                    import numpy as np
+
+                    # Instal library (via pip)
+                    # pip install requests
+                    import requests
+
+                    # Membuat module sendiri
+                    # mymodule.py
+                    def hello():
+                    print("Hello from module!")
+
+                    # main.py
+                    import mymodule
+                    mymodule.hello()
+                </div>
+
+                <h3>Library Populer Python</h3>
+                <ul>
+                    <li><strong>NumPy</strong> — komputasi numerik</li>
+                    <li><strong>Pandas</strong> — manipulasi data</li>
+                    <li><strong>Matplotlib</strong> — visualisasi</li>
+                    <li><strong>Scikit-learn</strong> — machine learning</li>
+                    <li><strong>TensorFlow/PyTorch</strong> — deep learning</li>
+                    <li><strong>Django/Flask</strong> — web framework</li>
+                    <li><strong>Requests</strong> — HTTP requests</li>
+                    <li><strong>BeautifulSoup</strong> — web scraping</li>
+                    <li><strong>Selenium</strong> — browser automation</li>
+                </ul>
+            </div>
+
+            <!-- ===== HALAMAN 36-38: PYTHON BAB 3 ===== -->
+            <!-- Halaman 36: Python File I/O -->
+            <div class="page-content" data-page="36" data-chapter="python">
+                <div class="page-number">
+                    <span>Halaman 36</span>
+                    <span class="chapter-tag">🐍 Python — Bab 3</span>
+                </div>
+                <h2><span class="icon">📂</span> Python — File I/O</h2>
+
+                <h3>Membaca &amp; Menulis File</h3>
+                <div class="code-block">
+                    # Menulis file
+                    with open("data.txt", "w") as file:
+                    file.write("Halo Boss!\n")
+                    file.write("Ini baris kedua.\n")
+
+                    # Menambahkan ke file (append)
+                    with open("data.txt", "a") as file:
+                    file.write("Baris ketiga\n")
+
+                    # Membaca seluruh file
+                    with open("data.txt", "r") as file:
+                    isi = file.read()
+                    print(isi)
+
+                    # Membaca per baris
+                    with open("data.txt", "r") as file:
+                    for baris in file:
+                    print(baris.strip())  # strip() hapus newline
+
+                    # Membaca sebagai list
+                    with open("data.txt", "r") as file:
+                    lines = file.readlines()
+                    print(lines)
+                </div>
+
+                <h3>Mode File</h3>
+                <ul>
+                    <li><strong>r</strong> — read (baca)</li>
+                    <li><strong>w</strong> — write (tulis, overwrite)</li>
+                    <li><strong>a</strong> — append (tambah di akhir)</li>
+                    <li><strong>r+</strong> — read & write</li>
+                    <li><strong>wb</strong> — write binary</li>
+                    <li><strong>rb</strong> — read binary</li>
+                </ul>
+
+                <h3>Bekerja dengan JSON</h3>
+                <div class="code-block">
+                    import json
+
+                    # Menulis JSON
+                    data = {"nama": "Boss", "level": 99}
+                    with open("data.json", "w") as file:
+                    json.dump(data, file)
+
+                    # Membaca JSON
+                    with open("data.json", "r") as file:
+                    loaded = json.load(file)
+                    print(loaded)  # {'nama': 'Boss', 'level': 99}
+                </div>
+            </div>
+
+            <!-- Halaman 37: Python Exception -->
+            <div class="page-content" data-page="37" data-chapter="python">
+                <div class="page-number">
+                    <span>Halaman 37</span>
+                    <span class="chapter-tag">🐍 Python — Bab 3</span>
+                </div>
+                <h2><span class="icon">⚠️</span> Python — Exception Handling</h2>
+                <p><strong>Exception</strong> adalah error yang terjadi saat program berjalan.</p>
+
+                <h3>Try-Except</h3>
+                <div class="code-block">
+                    try:
+                    angka = int(input("Masukkan angka: "))
+                    hasil = 10 / angka
+                    print(f"Hasil: {hasil}")
+                    except ValueError:
+                    print("⚠️ Bukan angka yang valid!")
+                    except ZeroDivisionError:
+                    print("⚠️ Gak bisa bagi dengan nol!")
+                    except Exception as e:
+                    print(f"Error: {e}")
+                    else:
+                    print("Tidak ada error!")
+                    finally:
+                    print("Selesai.")
+                </div>
+
+                <h3>Membuat Exception Sendiri</h3>
+                <div class="code-block">
+                    class MyError(Exception):
+                    def __init__(self, message):
+                    self.message = message
+                    super().__init__(message)
+
+                    try:
+                    raise MyError("Terjadi error kustom!")
+                    except MyError as e:
+                    print(e)
+                </div>
+
+                <h3>Best Practice</h3>
+                <ul>
+                    <li>Tangkap error spesifik, bukan general <code>Exception</code>.</li>
+                    <li>Gunakan <code>finally</code> untuk cleanup (tutup file, koneksi).</li>
+                    <li>Jangan biarkan error diam (silent fail).</li>
+                </ul>
+            </div>
+
+            <!-- Halaman 38: Python Lanjutan -->
+            <div class="page-content" data-page="38" data-chapter="python">
+                <div class="page-number">
+                    <span>Halaman 38</span>
+                    <span class="chapter-tag">🐍 Python — Bab 3</span>
+                </div>
+                <h2><span class="icon">🚀</span> Python — Fitur Lanjutan</h2>
+
+                <h3>Decorator</h3>
+                <div class="code-block">
+                    def timer(func):
+                    import time
+                    def wrapper(*args, **kwargs):
+                    start = time.time()
+                    result = func(*args, **kwargs)
+                    end = time.time()
+                    print(f"Waktu: {end - start:.2f}s")
+                    return result
+                    return wrapper
+
+                    @timer
+                    def slow_function():
+                    import time
+                    time.sleep(1)
+                    return "Selesai"
+
+                    print(slow_function())
+                </div>
+
+                <h3>Generator (yield)</h3>
+                <div class="code-block">
+                    def countdown(n):
+                    while n > 0:
+                    yield n
+                    n -= 1
+
+                    for i in countdown(5):
+                    print(i)  # 5, 4, 3, 2, 1
+                </div>
+
+                <h3>Context Manager (with)</h3>
+                <div class="code-block">
+                    class MyContext:
+                    def __enter__(self):
+                    print("Masuk context")
+                    return self
+
+                    def __exit__(self, exc_type, exc_val, exc_tb):
+                    print("Keluar context")
+
+                    with MyContext() as ctx:
+                    print("Di dalam context")
+                </div>
+
+                <h3>Type Hints (Python 3.5+)</h3>
+                <div class="code-block">
+                    def sapa(nama: str) -&gt; str:
+                    return f"Halo {nama}"
+
+                    def hitung(a: int, b: int) -&gt; int:
+                    return a + b
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 39-41: DART BAB 1 ===== -->
+            <!-- Halaman 39: Dart Pengenalan -->
+            <div class="page-content" data-page="39" data-chapter="dart">
+                <div class="page-number">
+                    <span>Halaman 39</span>
+                    <span class="chapter-tag">🎯 Dart — Bab 1</span>
+                </div>
+                <h2><span class="icon">🎯</span> Dart — Pengenalan</h2>
+                <p><strong>Dart</strong> adalah bahasa dari Google, dipakai untuk <span class="highlight">Flutter</span> (mobile, web, desktop).</p>
+                <p>Dart dirilis pada tahun 2011 dan sekarang menjadi bahasa utama untuk Flutter.</p>
+
+                <h3>Kenapa Dart?</h3>
+                <ul>
+                    <li>🎯 Dikembangkan oleh Google</li>
+                    <li>📱 Bahasa utama Flutter</li>
+                    <li>⚡ Performa tinggi (JIT & AOT)</li>
+                    <li>🔄 Hot reload di Flutter</li>
+                    <li>🌍 Multi-platform (mobile, web, desktop)</li>
+                </ul>
+
+                <h3>Menjalankan Dart</h3>
+                <ul>
+                    <li><strong>Dart SDK</strong> — <code>dart run file.dart</code></li>
+                    <li><strong>Flutter</strong> — untuk mobile apps</li>
+                    <li><strong>Online</strong> — <a href="https://dartpad.dev" target="_blank">DartPad</a></li>
+                </ul>
+                <div class="code-block">
+                    // Hello World
+                    void main() {
+                    print("Halo Dunia!");
+                    }
+                </div>
+            </div>
+
+            <!-- Halaman 40: Dart Variable & Tipe Data -->
+            <div class="page-content" data-page="40" data-chapter="dart">
+                <div class="page-number">
+                    <span>Halaman 40</span>
+                    <span class="chapter-tag">🎯 Dart — Bab 1</span>
+                </div>
+                <h2><span class="icon">📦</span> Dart — Variable &amp; Tipe Data</h2>
+
+                <h3>Variable</h3>
+                <p>Dart adalah <strong>strongly typed</strong> tapi bisa pakai <code>var</code> untuk inferensi.</p>
+                <div class="code-block">
+                    // Eksplisit
+                    String nama = "BARA AU";
+                    int umur = 25;
+                    double tinggi = 175.5;
+                    bool aktif = true;
+
+                    // var (inferensi)
+                    var kota = "Jakarta";
+                    var nilai = 100;
+                    var isReady = false;
+
+                    // dynamic (bisa berubah)
+                    dynamic data = "Halo";
+                    data = 25; // ok
+
+                    // late (inisialisasi nanti)
+                    late String pesan;
+                    pesan = "Halo";
+                </div>
+
+                <h3>Tipe Data Koleksi</h3>
+                <div class="code-block">
+                    // List (array)
+                    List<int> angka = [1, 2, 3];
+                    var hobi = ["coding", "game", "hack"];
+
+                    // Map (dictionary)
+                    Map<String, dynamic> profil = {
+                    "nama": "Boss",
+                    "level": 99,
+                    "skills": ["dart", "flutter"]
+                    };
+
+                    // Set (koleksi unik)
+                    Set<int> setData = {1, 2, 3};
+
+                    // Access
+                    print(angka[0]);  // 1
+                    print(profil["nama"]);  // Boss
+                </div>
+
+                <h3>Null Safety</h3>
+                <div class="code-block">
+                    // Tipe data wajib ada nilainya, kecuali pakai ?
+                    String? nullable;  // boleh null
+                    nullable = "BARA";
+
+                    // Pakai ! kalau yakin gak null
+                    print(nullable!.length);
+
+                    // Default value
+                    String? name;
+                    String display = name ?? "Anonim";
+                </div>
+            </div>
+
+            <!-- Halaman 41: Dart Function & Control Flow -->
+            <div class="page-content" data-page="41" data-chapter="dart">
+                <div class="page-number">
+                    <span>Halaman 41</span>
+                    <span class="chapter-tag">🎯 Dart — Bab 1</span>
+                </div>
+                <h2><span class="icon">🔀</span> Dart — Function &amp; Control Flow</h2>
+
+                <h3>Function</h3>
+                <div class="code-block">
+                    // Function dengan return
+                    String sapa(String nama) {
+                    return "Halo $nama";
+                    }
+
+                    // Arrow function (satu baris)
+                    int kali(int a, int b) => a * b;
+
+                    // Optional parameter
+                    String sapa2(String nama, [String? pesan]) {
+                    return "Halo $nama ${pesan ?? ''}";
+                    }
+
+                    // Named parameter
+                    void cetak({required String teks, int? jumlah}) {
+                    for (var i = 0; i < (jumlah ?? 1); i++) {
+                    print(teks);
+                    }
+                    }
+
+                    print(sapa("Boss"));
+                    print(kali(3, 4));
+                    cetak(teks: "Dart", jumlah: 3);
+                </div>
+
+                <h3>Control Flow</h3>
+                <div class="code-block">
+                    // If-else
+                    int umur = 20;
+                    if (umur >= 18) {
+                    print("Dewasa");
+                    } else if (umur >= 13) {
+                    print("Remaja");
+                    } else {
+                    print("Anak-anak");
+                    }
+
+                    // Switch
+                    String hari = "Senin";
+                    switch (hari) {
+                    case "Senin":
+                    print("Mulai kerja");
+                    break;
+                    case "Jumat":
+                    print("Hampir weekend");
+                    break;
+                    default:
+                    print("Hari biasa");
+                    }
+
+                    // Looping
+                    for (var i = 0; i < 5; i++) {
+                    print(i);
+                    }
+
+                    for (var item in ["a", "b", "c"]) {
+                    print(item);
+                    }
+
+                    int count = 0;
+                    while (count < 3) {
+                    print(count);
+                    count++;
+                    }
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 42-44: DART BAB 2 ===== -->
+            <!-- Halaman 42: Dart Class -->
+            <div class="page-content" data-page="42" data-chapter="dart">
+                <div class="page-number">
+                    <span>Halaman 42</span>
+                    <span class="chapter-tag">🎯 Dart — Bab 2</span>
+                </div>
+                <h2><span class="icon">🧬</span> Dart — Class &amp; Object</h2>
+
+                <h3>Class &amp; Object</h3>
+                <div class="code-block">
+                    class Hero {
+                    // Properties
+                    String name;
+                    int power;
+                    int level;
+
+                    // Constructor
+                    Hero(this.name, this.power, {this.level = 1});
+
+                    // Method
+                    void attack() {
+                    print("$name menyerang dengan power $power!");
+                    }
+
+                    void levelUp() {
+                    level++;
+                    print("$name naik ke level $level!");
+                    }
+
+                    // Getter & Setter
+                    String get info =&gt; "$name (Level $level)";
+
+                    set powerLevel(int value) {
+                    if (value &gt;= 0) power = value;
+                    }
+
+                    // toString
+                    @override
+                    String toString() {
+                    return "Hero($name, $power, $level)";
+                    }
+                    }
+
+                    // Inheritance
+                    class SuperHero extends Hero {
+                    String special;
+
+                    SuperHero(String name, int power, int level, this.special)
+                    : super(name, power, level: level);
+
+                    void useSpecial() {
+                    print("$name menggunakan $special!");
+                    }
+
+                    @override
+                    void attack() {
+                    super.attack();
+                    print("Serangan super!");
+                    }
+                    }
+
+                    void main() {
+                    var hero1 = Hero("BARA", 999, level: 50);
+                    hero1.attack();
+                    hero1.levelUp();
+                    print(hero1.info);
+
+                    var hero2 = SuperHero("Boss", 2000, 99, "Hack Time");
+                    hero2.useSpecial();
+                    hero2.attack();
+                    }
+                </div>
+            </div>
+
+            <!-- Halaman 43: Dart Async -->
+            <div class="page-content" data-page="43" data-chapter="dart">
+                <div class="page-number">
+                    <span>Halaman 43</span>
+                    <span class="chapter-tag">🎯 Dart — Bab 2</span>
+                </div>
+                <h2><span class="icon">⏳</span> Dart — Async &amp; Future</h2>
+
+                <h3>Future</h3>
+                <p><strong>Future</strong> merepresentasikan operasi async yang akan selesai di masa depan.</p>
+                <div class="code-block">
+                    import 'dart:async';
+
+                    // Future dengan delay
+                    Future<void> getData() async {
+                    print("Mengambil data...");
+                    await Future.delayed(Duration(seconds: 2));
+                    print("Data berhasil!");
+                    }
+
+                    // Future dengan return value
+                    Future<int> hitungAsync(int a, int b) async {
+                    await Future.delayed(Duration(seconds: 1));
+                    return a + b;
+                    }
+
+                    void main() async {
+                    await getData();
+                    var hasil = await hitungAsync(5, 3);
+                    print("Hasil: $hasil");
+                    }
+                </div>
+
+                <h3>Stream</h3>
+                <p><strong>Stream</strong> untuk data berkelanjutan (seperti event).</p>
+                <div class="code-block">
+                    import 'dart:async';
+
+                    Stream<int> countStream(int max) async* {
+                    for (var i = 1; i <= max; i++) {
+                    await Future.delayed(Duration(seconds: 1));
+                    yield i; // Kirim data
+                    }
+                    }
+
+                    void main() async {
+                    await for (var value in countStream(5)) {
+                    print(value); // 1,2,3,4,5 tiap 1 detik
+                    }
+                    }
+                </div>
+
+                <h3>Error Handling</h3>
+                <div class="code-block">
+                    Future<void> getDataWithError() async {
+                    try {
+                    var data = await Future.delayed(
+                    Duration(seconds: 1),
+                    () => throw Exception("Gagal!")
+                    );
+                    print(data);
+                    } catch (e) {
+                    print("Error: $e");
+                    } finally {
+                    print("Selesai");
+                    }
+                    }
+                </div>
+            </div>
+
+            <!-- Halaman 44: Dart Lanjutan -->
+            <div class="page-content" data-page="44" data-chapter="dart">
+                <div class="page-number">
+                    <span>Halaman 44</span>
+                    <span class="chapter-tag">🎯 Dart — Bab 2</span>
+                </div>
+                <h2><span class="icon">🚀</span> Dart — Fitur Lanjutan</h2>
+
+                <h3>Extension Methods</h3>
+                <div class="code-block">
+                    extension StringExtension on String {
+                    String reverse() {
+                    return this.split('').reversed.join();
+                    }
+
+                    int toInt() {
+                    return int.parse(this);
+                    }
+                    }
+
+                    void main() {
+                    print("Halo".reverse());  // olaH
+                    print("123".toInt() + 1); // 124
+                    }
+                </div>
+
+                <h3>Mixins</h3>
+                <div class="code-block">
+                    mixin Flyable {
+                    void fly() {
+                    print("Terbang!");
+                    }
+                    }
+
+                    mixin Swimmable {
+                    void swim() {
+                    print("Berenang!");
+                    }
+                    }
+
+                    class Animal {}
+
+                    class Duck extends Animal with Flyable, Swimmable {}
+
+                    void main() {
+                    var duck = Duck();
+                    duck.fly();
+                    duck.swim();
+                    }
+                </div>
+
+                <h3>Generics</h3>
+                <div class="code-block">
+                    class Box&lt;T&gt; {
+                    T value;
+                    Box(this.value);
+
+                    T getValue() => value;
+                    }
+
+                    void main() {
+                    var boxInt = Box&lt;int&gt;(10);
+                    var boxString = Box&lt;String&gt;("Halo");
+
+                    print(boxInt.getValue()); // 10
+                    print(boxString.getValue()); // Halo
+                    }
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 45-47: SQL BAB 1 ===== -->
+            <!-- Halaman 45: SQL Pengenalan -->
+            <div class="page-content" data-page="45" data-chapter="sql">
+                <div class="page-number">
+                    <span>Halaman 45</span>
+                    <span class="chapter-tag">🗄️ SQL — Bab 1</span>
+                </div>
+                <h2><span class="icon">🗄️</span> SQL — Pengenalan</h2>
+                <p><strong>SQL</strong> (Structured Query Language) digunakan untuk <span class="highlight">mengelola database</span> relasional.</p>
+                <p>SQL pertama kali dikembangkan oleh IBM pada tahun 1970-an dan sekarang menjadi standar industri.</p>
+
+                <h3>Database Relasional</h3>
+                <ul>
+                    <li><strong>Table</strong> — kumpulan data dalam baris & kolom.</li>
+                    <li><strong>Row</strong> — satu record data.</li>
+                    <li><strong>Column</strong> — atribut data.</li>
+                    <li><strong>Primary Key</strong> — identitas unik tiap baris.</li>
+                    <li><strong>Foreign Key</strong> — referensi ke tabel lain.</li>
+                </ul>
+
+                <h3>Contoh Tabel Users</h3>
+                <div class="code-block">
+                    -- Membuat tabel
+                    CREATE TABLE users (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    email TEXT UNIQUE NOT NULL,
+                    age INTEGER,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    );
+                </div>
+
+                <h3>Tipe Data SQL Umum</h3>
+                <ul>
+                    <li><strong>INTEGER</strong> — angka bulat</li>
+                    <li><strong>REAL</strong> — angka desimal</li>
+                    <li><strong>TEXT</strong> — string/teks</li>
+                    <li><strong>BOOLEAN</strong> — true/false</li>
+                    <li><strong>DATE</strong> — tanggal</li>
+                    <li><strong>TIMESTAMP</strong> — tanggal & waktu</li>
+                    <li><strong>BLOB</strong> — binary data</li>
+                </ul>
+            </div>
+
+            <!-- Halaman 46: SQL SELECT & INSERT -->
+            <div class="page-content" data-page="46" data-chapter="sql">
+                <div class="page-number">
+                    <span>Halaman 46</span>
+                    <span class="chapter-tag">🗄️ SQL — Bab 1</span>
+                </div>
+                <h2><span class="icon">🔍</span> SQL — SELECT &amp; INSERT</h2>
+
+                <h3>SELECT (Membaca Data)</h3>
+                <div class="code-block">
+                    -- Ambil semua data
+                    SELECT * FROM users;
+
+                    -- Ambil kolom tertentu
+                    SELECT id, name, email FROM users;
+
+                    -- Dengan kondisi
+                    SELECT * FROM users WHERE age > 18;
+
+                    -- Kombinasi kondisi (AND / OR)
+                    SELECT * FROM users
+                    WHERE age > 18 AND city = 'Jakarta';
+
+                    -- Urutkan
+                    SELECT * FROM users ORDER BY name ASC;  -- A-Z
+                    SELECT * FROM users ORDER BY age DESC;  -- Tertinggi
+
+                    -- Limit jumlah
+                    SELECT * FROM users LIMIT 10;
+
+                    -- Cari LIKE
+                    SELECT * FROM users WHERE name LIKE '%BARA%';
+
+                    -- DISTINCT (unik)
+                    SELECT DISTINCT city FROM users;
+                </div>
+
+                <h3>INSERT (Menambah Data)</h3>
+                <div class="code-block">
+                    -- Tambah satu data
+                    INSERT INTO users (name, email, age)
+                    VALUES ('BARA AU', 'bara@hack.com', 25);
+
+                    -- Tambah banyak data
+                    INSERT INTO users (name, email, age) VALUES
+                    ('Andi', 'andi@mail.com', 20),
+                    ('Budi', 'budi@mail.com', 22),
+                    ('Caca', 'caca@mail.com', 19);
+
+                    -- Insert dengan RETURNING (PostgreSQL)
+                    INSERT INTO users (name, email)
+                    VALUES ('Boss', 'boss@hack.com')
+                    RETURNING id;
+                </div>
+                <div class="info-box">
+                    <strong>💡 Tips:</strong> Gunakan <code>WHERE</code> dengan hati-hati. Jangan lupa <code>LIMIT</code> untuk data besar.
+                </div>
+            </div>
+
+            <!-- Halaman 47: SQL Filter & Agregasi -->
+            <div class="page-content" data-page="47" data-chapter="sql">
+                <div class="page-number">
+                    <span>Halaman 47</span>
+                    <span class="chapter-tag">🗄️ SQL — Bab 1</span>
+                </div>
+                <h2><span class="icon">🔍</span> SQL — Filter &amp; Agregasi</h2>
+
+                <h3>Filter Lanjutan</h3>
+                <div class="code-block">
+                    -- IN (multiple values)
+                    SELECT * FROM users WHERE city IN ('Jakarta', 'Bandung');
+
+                    -- BETWEEN
+                    SELECT * FROM users WHERE age BETWEEN 18 AND 25;
+
+                    -- IS NULL / IS NOT NULL
+                    SELECT * FROM users WHERE email IS NOT NULL;
+
+                    -- LIKE dengan wildcard
+                    SELECT * FROM users WHERE name LIKE 'A%';   -- Mulai A
+                    SELECT * FROM users WHERE name LIKE '%an%'; -- Mengandung 'an'
+                </div>
+
+                <h3>Agregasi (GROUP BY)</h3>
+                <div class="code-block">
+                    -- COUNT
+                    SELECT COUNT(*) FROM users;
+                    SELECT COUNT(DISTINCT city) FROM users;
+
+                    -- SUM, AVG, MIN, MAX
+                    SELECT AVG(age) FROM users;
+                    SELECT MAX(age) FROM users;
+                    SELECT SUM(age) FROM users;
+
+                    -- GROUP BY
+                    SELECT city, COUNT(*) as total
+                    FROM users
+                    GROUP BY city;
+
+                    -- HAVING (filter GROUP BY)
+                    SELECT city, COUNT(*) as total
+                    FROM users
+                    GROUP BY city
+                    HAVING COUNT(*) > 5;
+                </div>
+            </div>
+
+            <!-- ===== HALAMAN 48-50: SQL BAB 2 ===== -->
+            <!-- Halaman 48: SQL UPDATE & DELETE -->
+            <div class="page-content" data-page="48" data-chapter="sql">
+                <div class="page-number">
+                    <span>Halaman 48</span>
+                    <span class="chapter-tag">🗄️ SQL — Bab 2</span>
+                </div>
+                <h2><span class="icon">✏️</span> SQL — UPDATE &amp; DELETE</h2>
+
+                <h3>UPDATE (Mengubah Data)</h3>
+                <div class="code-block">
+                    -- Ubah data spesifik
+                    UPDATE users
+                    SET age = 26, email = 'bara@new.com'
+                    WHERE name = 'BARA AU';
+
+                    -- Ubah banyak data
+                    UPDATE users
+                    SET status = 'active'
+                    WHERE age >= 18;
+
+                    -- UPDATE dengan JOIN (MySQL/PostgreSQL)
+                    UPDATE users u
+                    SET u.city = 'Jakarta'
+                    FROM orders o
+                    WHERE u.id = o.user_id AND o.total > 100;
+                </div>
+
+                <h3>DELETE (Menghapus Data)</h3>
+                <div class="code-block">
+                    -- Hapus data spesifik
+                    DELETE FROM users
+                    WHERE id = 5;
+
+                    -- Hapus berdasarkan kondisi
+                    DELETE FROM users
+                    WHERE status = 'inactive' AND last_login < '2025-01-01';
+
+                    -- Hapus semua data (hati-hati!)
+                    DELETE FROM users; -- tanpa WHERE, semua kehapus!
+
+                    -- TRUNCATE (lebih cepat, reset auto-increment)
+                    TRUNCATE TABLE users;
+                </div>
+
+                <div class="info-box">
+                    <strong>🔴 PERINGATAN!</strong> Selalu pake <code>WHERE</code> saat UPDATE atau DELETE. Kalo lupa, semua data bisa berubah atau hilang! Gunakan <code>BEGIN TRANSACTION</code> untuk test.
+                </div>
+            </div>
+
+            <!-- Halaman 49: SQL JOIN -->
+            <div class="page-content" data-page="49" data-chapter="sql">
+                <div class="page-number">
+                    <span>Halaman 49</span>
+                    <span class="chapter-tag">🗄️ SQL — Bab 2</span>
+                </div>
+                <h2><span class="icon">🔗</span> SQL — JOIN</h2>
+                <p><strong>JOIN</strong> digunakan untuk menggabungkan data dari dua atau lebih tabel yang saling berelasi.</p>
+
+                <h3>INNER JOIN</h3>
+                <p>Data yang cocok di kedua tabel.</p>
+                <div class="code-block">
+                    SELECT users.name, orders.total, orders.created_at
+                    FROM users
+                    INNER JOIN orders ON users.id = orders.user_id;
+                </div>
+
+                <h3>LEFT JOIN</h3>
+                <p>Semua data dari tabel kiri, hanya yang cocok dari kanan.</p>
+                <div class="code-block">
+                    SELECT users.name, orders.total
+                    FROM users
+                    LEFT JOIN orders ON users.id = orders.user_id;
+                    -- User tanpa order tetap muncul, total = NULL
+                </div>
+
+                <h3>RIGHT JOIN</h3>
+                <p>Kebalikan dari LEFT JOIN.</p>
+                <div class="code-block">
+                    SELECT users.name, orders.total
+                    FROM users
+                    RIGHT JOIN orders ON users.id = orders.user_id;
+                </div>
+
+                <h3>FULL OUTER JOIN</h3>
+                <p>Semua data dari kedua tabel.</p>
+                <div class="code-block">
+                    SELECT users.name, orders.total
+                    FROM users
+                    FULL OUTER JOIN orders ON users.id = orders.user_id;
+                </div>
+
+                <h3>Self JOIN</h3>
+                <p>Join tabel dengan dirinya sendiri.</p>
+                <div class="code-block">
+                    SELECT a.name AS employee, b.name AS manager
+                    FROM employees a
+                    LEFT JOIN employees b ON a.manager_id = b.id;
+                </div>
+            </div>
+
+            <!-- Halaman 50: SQL Subquery & Index -->
+            <div class="page-content" data-page="50" data-chapter="sql">
+                <div class="page-number">
+                    <span>Halaman 50</span>
+                    <span class="chapter-tag">🗄️ SQL — Bab 2</span>
+                </div>
+                <h2><span class="icon">🔍</span> SQL — Subquery &amp; Index</h2>
+
+                <h3>Subquery (Query di dalam Query)</h3>
+                <div class="code-block">
+                    -- Subquery di WHERE
+                    SELECT name FROM users
+                    WHERE id IN (
+                    SELECT user_id FROM orders WHERE total > 100
+                    );
+
+                    -- Subquery di SELECT
+                    SELECT name,
+                    (SELECT COUNT(*) FROM orders WHERE user_id = users.id) as order_count
+                    FROM users;
+
+                    -- Subquery di FROM
+                    SELECT AVG(total) FROM (
+                    SELECT user_id, SUM(total) as total
+                    FROM orders
+                    GROUP BY user_id
+                    ) AS user_totals;
+                </div>
+
+                <h3>Index (Mempercepat Query)</h3>
+                <div class="code-block">
+                    -- Membuat index
+                    CREATE INDEX idx_users_email ON users(email);
+                    CREATE INDEX idx_orders_user_id ON orders(user_id);
+
+                    -- Composite index
+                    CREATE INDEX idx_users_name_age ON users(name, age);
+
+                    -- Hapus index
+                    DROP INDEX idx_users_email;
+                </div>
+
+                <h3>Best Practice SQL</h3>
+                <ul>
+                    <li>Gunakan <strong>index</strong> pada kolom yang sering di <code>WHERE</code> atau <code>JOIN</code>.</li>
+                    <li>Hindari <code>SELECT *</code>, pilih kolom spesifik.</li>
+                    <li>Gunakan <strong>LIMIT</strong> untuk data besar.</li>
+                    <li>Normalisasi database (hindari duplikasi data).</li>
+                    <li>Gunakan <strong>EXPLAIN</strong> untuk analisis query.</li>
+                    <li>Backup data sebelum melakukan operasi berbahaya.</li>
+                </ul>
+            </div>
+
+        </div><!-- end pages-container -->
+
+        <!-- ========== FOOTER BUKU ========== -->
+        <div class="book-footer">
+            <p>📚 <strong>Belajar Pemrograman Dari Dasar</strong> — by <strong>BARA AU</strong> untuk PACK LEADER</p>
+            <p style="font-size: 12px; opacity: 0.6;">Total 50 Halaman — Versi 3.0 — 2026</p>
+        </div>
+
+    </div><!-- end book-wrapper -->
+
+    <!-- ==================== NAVIGASI BAWAH (FIXED) ==================== -->
+    <div class="bottom-nav" id="bottomNav">
+        <div class="left-group">
+            <button class="nav-btn" id="prevBtn" disabled>◀ Sebelum</button>
+            <span class="page-indicator" id="pageIndicator">Halaman 1 / 50</span>
+            <button class="nav-btn" id="nextBtn">Berikut ▶</button>
+        </div>
+        <div class="right-group">
+            <span class="chapter-badge" id="chapterBadge">📖 Cover</span>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Cari...">
+                <button class="search-btn" onclick="searchPage()">Go</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPT ==================== -->
+    <script>
+        // ===== DATA HALAMAN =====
+        const pages = document.querySelectorAll('.page-content');
+        let currentPage = 0;
+        const totalPages = pages.length;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const chapterBadge = document.getElementById('chapterBadge');
+
+        const chapterLabels = {
+            'cover': '📖 Cover',
+            'html': '🌐 HTML',
+            'css': '🎨 CSS',
+            'js': '⚡ JavaScript',
+            'python': '🐍 Python',
+            'dart': '🎯 Dart',
+            'sql': '🗄️ SQL'
+        };
+
+        function updatePage() {
+            pages.forEach(p => p.classList.remove('active'));
+            pages[currentPage].classList.add('active');
+
+            pageIndicator.textContent = `Halaman ${currentPage + 1} / ${totalPages}`;
+
+            const chapter = pages[currentPage].dataset.chapter;
+            chapterBadge.textContent = chapterLabels[chapter] || '📖 Buku';
+
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === totalPages - 1;
+
+            document.querySelectorAll('.search-highlight').forEach(el => {
+                el.outerHTML = el.innerHTML;
+            });
+            document.getElementById('searchInput').value = '';
+
+            document.getElementById('pagesContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) { currentPage--;
+                updatePage(); }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages - 1) { currentPage++;
+                updatePage(); }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentPage > 0) { currentPage--;
+                updatePage();
+                e.preventDefault(); }
+            if (e.key === 'ArrowRight' && currentPage < totalPages - 1) { currentPage++;
+                updatePage();
+                e.preventDefault(); }
+        });
+
+        function searchPage() {
+            const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!keyword) { alert('Masukkan kata kunci dulu, Boss!'); return; }
+
+            document.querySelectorAll('.search-highlight').forEach(el => { el.outerHTML = el.innerHTML; });
+
+            let found = false;
+            let firstFoundPage = null;
+
+            pages.forEach((page, index) => {
+                const text = page.innerText.toLowerCase();
+                if (text.includes(keyword)) {
+                    found = true;
+                    if (!firstFoundPage) firstFoundPage = index;
+                    highlightTextInPage(page, keyword);
+                }
+            });
+
+            if (!found) { alert(`🔍 "${keyword}" gak ketemu di buku ini, Bos!`); return; }
+
+            if (firstFoundPage !== null) {
+                currentPage = firstFoundPage;
+                updatePage();
+                const activePage = pages[currentPage];
+                activePage.style.borderLeftColor = '#ffaa44';
+                setTimeout(() => { activePage.style.borderLeftColor = '#ff6b35'; }, 2000);
+            }
+        }
+
+        function highlightTextInPage(container, keyword) {
+            const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+            const nodesToReplace = [];
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.parentElement &&
+                    node.parentElement.tagName !== 'CODE' &&
+                    node.parentElement.tagName !== 'PRE' &&
+                    node.parentElement.closest('.code-block') === null &&
+                    node.parentElement.closest('.table-wrap') === null) {
+                    if (node.nodeValue.toLowerCase().includes(keyword)) {
+                        nodesToReplace.push(node);
+                    }
+                }
+            }
+
+            nodesToReplace.forEach(textNode => {
+                const parent = textNode.parentElement;
+                const text = textNode.nodeValue;
+                const regex = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                const parts = text.split(regex);
+                const fragment = document.createDocumentFragment();
+                parts.forEach(part => {
+                    if (part && part.toLowerCase() === keyword.toLowerCase()) {
+                        const span = document.createElement('span');
+                        span.className = 'search-highlight';
+                        span.textContent = part;
+                        fragment.appendChild(span);
+                    } else if (part) {
+                        fragment.appendChild(document.createTextNode(part));
+                    }
+                });
+                parent.replaceChild(fragment, textNode);
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchPage();
+        });
+
+        updatePage();
+        console.log(`📚 Buku "Belajar Pemrograman Dari Dasar" — ${totalPages} halaman siap!`);
+        console.log('📍 Navigasi FIXED di bawah, gak ikut scroll!');
+        console.log('🔥 BARA AU gas terus!');
+    </script>
+
+</body>
+</html>
